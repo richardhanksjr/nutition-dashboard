@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'api',
+    'front_end',
 ]
 
 MIDDLEWARE = [
@@ -129,12 +130,11 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 # # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-print("static_root", STATIC_ROOT)
-STATIC_URL = '/code/staticfiles/'
+# STATIC_URL = '/code/staticfiles/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
