@@ -1,0 +1,67 @@
+<!-- Modal -->
+<div class="modal fade" id="exerciseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add food</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'add_exercise' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select name="exercise_number">
+                            <option class="form-control" value="1">HIT Exercise</option>
+                            <option class="form-control" value="2">Low Intensity/Movement</option>
+                        </select>
+                    </div>
+
+
+                    <input class="btn btn-primary" type="submit" value="Add Exercise">
+                </form>
+
+
+                {% if hit_exercises %}
+                    <hr>
+
+                    <div id="hit_exercises_for_day">
+                        <ul>
+                            {% for exercise in hit_exercises %}
+                                <form method="post" action="{% url 'delete_exercise' %}">
+                                    {% csrf_token %}
+                                    <li>{{ exercise.exercise_type }}</li>
+                                    <input type="hidden" name="id" value="{{ exercise.id }}">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if low_intensity %}
+                    <hr>
+
+                    <div id="">
+                        <ul>
+                            {% for exercise in low_intensity %}
+                                <form method="post" action="{% url 'delete_exercise' %}">
+                                    {% csrf_token %}
+                                    <li>{{ exercise.exercise_type }}</li>
+                                    <input type="hidden" name="id" value="{{ exercise.id }}">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

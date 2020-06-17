@@ -130,6 +130,15 @@ class DeleteEntry(LoginRequiredMixin, View):
         entry.delete()
         return HttpResponseRedirect(reverse('index'))
 
+class DeleteExercise(LoginRequiredMixin, View):
+    def post(self, request):
+        id = request.POST.get('id')
+        entry = Exercise.objects.get(id=id)
+        # TODO fix this
+        # if request.user is entry.user:
+        entry.delete()
+        return HttpResponseRedirect(reverse('index'))
+
 
 class AddExercise(LoginRequiredMixin, View):
     def post(self, request):

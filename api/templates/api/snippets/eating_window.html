@@ -1,8 +1,34 @@
 {% load static %}
+<script type="text/javascript">
+
+    let seconds_since_first_meal = {{ seconds_since_first_meal }}
+</script>
+
 <div class="col-sm mt-2">
-    <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
-        <div class="card-body text-center">
-            {{ total_time_eating}} EATING
+    {% if fasting %}
+        <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
+            <div class="card-body text-center">
+                FASTING
+            </div>
         </div>
-    </div>
+    {% elif in_yellow or in_red %}
+        <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
+            <div class="card-body text-center">
+                OUTSIDE EATING WINDOW
+            </div>
+        </div>
+        {% elif eating_done_green %}
+                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
+            <div class="card-body text-center">
+                EATING DONE FOR TODAY
+            </div>
+        </div>
+        {% else %}
+                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
+            <div class="card-body text-center">
+                Eating Time Left: <span id="clock"></span>
+            </div>
+        </div>
+    {% endif %}
+
 </div>

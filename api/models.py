@@ -47,3 +47,8 @@ class Exercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise_type = models.CharField(choices=EXERCISE_CHOICES, max_length=20)
     date = models.DateField(auto_now_add=True)
+
+
+class StopEatingEvent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)

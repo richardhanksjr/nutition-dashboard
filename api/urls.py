@@ -13,5 +13,6 @@ urlpatterns = [
     path('add_existing_meal', views.AddExistingMeal.as_view(), name='add_existing_meal'),
     path('delete_entry', views.DeleteEntry.as_view(), name='delete_entry'),
     path('add_exercise', views.AddExercise.as_view(), name='add_exercise'),
+    path('delete_exercise', views.DeleteExercise.as_view(), name='delete_exercise'),
 
 ]

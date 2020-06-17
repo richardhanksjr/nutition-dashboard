@@ -1,0 +1,68 @@
+<!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add food</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <form method="get" action="{% url  'nutrition_api_search' %}">
+                                <div class="form-group">
+                                    <label for="nutrition_api_input">Enter food contents separated by commas:</label>
+                                    <input id="nutrition_api_input" class="form-control" type="text" name="search_term">
+                                </div>
+                                <button id="search_button" class="btn btn-primary">Add a new meal</button>
+                                <div id="modal-or"> --or--</div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr>
+                    {% if meals %}
+                        <div class="row">
+                            <div class="col-sm">
+                                <form method="post" action="{% url 'add_existing_meal' %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <select name="existing_meal_name">
+                                            {% for meal in meals %}
+                                                <option class="form-control"
+                                                        value="{{ meal.name }}">{{ meal.name }}:{{ meal.description }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <input class="btn btn-primary" type="submit" value="Select Existing Meal">
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                <hr>
+
+{#                Food log#}
+                <div id="nutrition_entries_for_day">
+                    <ul>
+                        {% for entry in entries %}
+                            <form method="post" action="{% url 'delete_entry' %}">
+                                {% csrf_token %}
+                                <li>{{ entry.description }}</li>
+                                <input type="hidden" name="id" value="{{ entry.id }}">
+                                <button class="btn btn-danger">Delete</button>
+
+                            </form>
+                        {% endfor %}
+                    </ul>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

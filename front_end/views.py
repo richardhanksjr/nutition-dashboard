@@ -5,6 +5,7 @@ from django.utils import timezone
 
 # from api.forms import NutritionEntryForm
 from api.models import NutritionEntry, Meal, Exercise
+
 GOLD = "background-color:#EEE8AA; border: 1px solid black;"
 RED = "background-color:red;"
 YELLOW = "background-color:yellow;"
@@ -25,11 +26,13 @@ class Index(LoginRequiredMixin, TemplateView):
             context['pe_ratio_color'] = RED
             context['total_protein'] = 0
             context['total_protein_color'] = RED
-            return context
         context['entries'] = nutrition_entries
         total_protein_for_day = sum([entry.protein_grams for entry in nutrition_entries])
         total_energy = sum([entry.carb_grams + entry.fat_grams for entry in nutrition_entries])
-        pe_ratio = total_protein_for_day / total_energy
+        if total_energy:
+            pe_ratio = total_protein_for_day / total_energy
+        else:
+            pe_ratio = 0
         context['pe_ratio'] = pe_ratio
         if pe_ratio >= 2.5:
             context['pe_ratio_color'] = GOLD
@@ -66,14 +69,42 @@ class Index(LoginRequiredMixin, TemplateView):
         else:
             context['exercise_color'] = RED
 
-        first_meal_time = NutritionEntry.objects.filter(date=today, user=user).order_by('-time_entered')\
-                        .first().time_entered
-        eating_time = timezone.now() - first_meal_time
-        if eating_time < timezone.timedelta(hours=user.user_profile.num_hours_eating_window):
-            context['eating_time_color'] = GREEN
+        context['hit_exercises'] = hit_exercises
+        context['low_intensity'] = low_intesity_exercises
+
+        meals = NutritionEntry.objects.filter(date=today, user=user).order_by('-time_entered')
+        # Only calculate eating window if we have a first meal.   In template, check for 'fasting'
+        if meals.first():
+            context['fasting'] = False
+            # first_meal_time = first_meal.time_entered
+            # eating_time = timezone.now() - first_meal_time
+            # if eating_time < timezone.timedelta(hours=user.user_profile.num_hours_eating_window):
+            #     context['eating_time_color'] = GREEN
+            # else:
+            #     context['eating_time_color'] = RED
+            last_meal_time = meals.last().time_entered
+            end_eating_time = meals.first().time_entered + timezone.timedelta(
+                hours=user.user_profile.num_hours_eating_window)
+            num_hours_yellow_window = 1
+            if timezone.now() <= end_eating_time:
+                context['eating_time_color'] = GREEN
+                context['seconds_since_first_meal'] = (
+                        timezone.timedelta(hours=user.user_profile.num_hours_eating_window)
+                        - (timezone.now() - meals.first().time_entered)).total_seconds()
+            elif end_eating_time <= timezone.now() < end_eating_time + timezone.timedelta(
+                    hours=num_hours_yellow_window):
+                context['in_yellow'] = True
+                context['eating_time_color'] = YELLOW
+            elif end_eating_time <= timezone.now():
+                context['eating_done_green'] = True
+                context['eating_time_color'] = GREEN
+            else:
+                context['in_red'] = True
+                context['eating_time_color'] = RED
+
+
+
         else:
-            context['eating_time_color'] = RED
-        context['total_time_eating'] = str(timezone.now() - first_meal_time).split(".")[0]
-
+            context['fasting'] = True
+            context['eating_time_color'] = GREEN
         return context
-
