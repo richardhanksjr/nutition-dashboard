@@ -1,13 +1,10 @@
 {%  load static %}
-<div id="pe_ratio_parent">
-    <img src="{%  static 'images/pe_meter.jpeg' %}"/>
-    <div>{{ pe_ratio|floatformat:'2' }}</div>
-
-    {%  for ne in nutrition_entries %}
-        <div>Name: {{ne.food.name}}</div>
-        <div>Protein Grams: {{ ne.food.protein_grams }}</div>
-        <div>Fat Grams: {{ ne.food.fat_grams }}</div>
-        <div>Carb Grams: {{ ne.food.carb_grams }}</div>
-        <hr>
-    {% endfor %}
+<div class="col-sm mt-2">
+{#    <h5 class="text-center">P:E Ratio:</h5>#}
+    <div id="pe_ratio_parent" class="card" style={{ pe_ratio_color }}>
+    <div class="card-body text-center">
+{#            {{ pe_ratio|floatformat:2 }}#}
+        P:E RATIO
+    </div>
+</div>
 </div>

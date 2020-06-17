@@ -2,10 +2,11 @@ version: '3.7'
 services:
   web:
     build: .
-    command: bash -c "python /code/manage.py collectstatic --noinput &&
-                      python /code/manage.py migrate &&
-                      gunicorn nutrition.wsgi -b 0.0.0.0:8000
-                      "
+#    command: bash -c "python /code/manage.py collectstatic --noinput &&
+#                      python /code/manage.py migrate &&
+#                      gunicorn nutrition.wsgi -b 0.0.0.0:8000
+#                      "
+    command: python manage.py runserver 0.0.0.0:8000
     environment:
       - SECRET_KEY="${SECRET_KEY}"
       - DEBUG="${DEBUG}"

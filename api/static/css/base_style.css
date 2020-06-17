@@ -1,0 +1,19 @@
+body{
+    margin-top: 20px;
+}
+
+#modal-or{
+    margin-top: 1rem;
+}
+
+select {
+  width: 100%;
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+  -webkit-appearance: none;
+}
+
+/*button{*/
+/*width: 210px !important;*/
+/*}*/

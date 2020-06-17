@@ -18,5 +18,5 @@ function fetchHTMLandAppend(parent_id, route){
 }
 
 
-pe_ratio.addEventListener("click", () => fetchHTMLandAppend('pe_ratio_parent', "api/pe_ratio"));
-nutrition_entry.addEventListener("click", () => fetchHTMLandAppend("nutrition_entry_form", "api/nutrition_entry_load"));
+// pe_ratio.addEventListener("click", () => fetchHTMLandAppend('pe_ratio_parent', "api/pe_ratio"));
+// nutrition_entry.addEventListener("click", () => fetchHTMLandAppend("nutrition_entry_form", "api/nutrition_entry_load"));

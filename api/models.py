@@ -4,22 +4,27 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Food(models.Model):
+class Meal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=False, blank=False, unique=True)
     protein_grams = models.FloatField(null=False, blank=False)
     carb_grams = models.FloatField(null=False, blank=False)
     fat_grams = models.FloatField(null=False, blank=False)
-    serving_size = models.CharField(max_length=255, null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
 
-    def __str__(self):
-        return f"{self.name}"
+    class Meta:
+        unique_together = [['user', 'name']]
 
 
 class NutritionEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    num_servings = models.FloatField(null=False, blank=False)
+    time_entered = models.DateTimeField(auto_now_add=True)
+    protein_grams = models.FloatField(null=False, blank=False)
+    carb_grams = models.FloatField(null=False, blank=False)
+    fat_grams = models.FloatField(null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    num_servings = models.FloatField(null=False, blank=False, default=1)
 
     def __str__(self):
         return f"{self.user.username}--{self.date}: {self.food.name}"
@@ -27,3 +32,18 @@ class NutritionEntry(models.Model):
     class Meta:
         verbose_name_plural = 'NutritionEntries'
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
+    ideal_body_weight = models.IntegerField(null=False, blank=False)
+    num_hours_eating_window = models.IntegerField(null=False, blank=False, default=8)
+
+
+class Exercise(models.Model):
+    EXERCISE_CHOICES = [
+        ('high_intensity', 'High Intensity'),
+        ('low_intensity', 'Low Intensity')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exercise_type = models.CharField(choices=EXERCISE_CHOICES, max_length=20)
+    date = models.DateField(auto_now_add=True)

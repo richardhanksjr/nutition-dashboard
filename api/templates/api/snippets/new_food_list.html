@@ -1,0 +1,21 @@
+
+    <ul>
+        {% for ingredient in ingredients %}
+            <li>{{ ingredient }}</li>
+        {% endfor %}
+    </ul>
+<form method="post" action="{% url 'add_new_food' %}">
+    {% csrf_token %}
+    <h6>{{ protein.label }}</h6>
+    <input type="hidden" name="description" value="{{ ingredients|join:' and '}}">
+    <input type="float" name="protein" placeholder="{{ protein.quantity|floatformat:2 }}" value="{{protein.quantity|floatformat:2 }} " required><div>{{ protein.unit }}</div>
+
+    <h6>{{ carbs.label }}</h6>
+    <input type="float" name="carbs" placeholder="{{ carbs.quantity|floatformat:2 }}" value="{{carbs.quantity|floatformat:2 }}" required><div>{{ carbs.unit }}</div>
+
+    <h6>{{ fat.label }}</h6>
+    <input type="float" name="fat" placeholder="{{ fat.quantity|floatformat:2 }}" value="{{fat.quantity|floatformat:2 }}" required><div>{{ fat.unit }}</div>
+    <div>OPTIONAL: Enter meal name if you would like to save this meal for future use.</div>
+    <input type="text" name="meal_title" placeholder="Meal Title">
+    <input type="submit" value="submit">
+</form>

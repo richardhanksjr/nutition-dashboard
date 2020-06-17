@@ -2,10 +2,14 @@
 {#    {% csrf_token %}#}
 {#    <input type="submit" value="Save">#}
 {#</form>#}
-<div>
-<form method="post" action="{%  url 'new_nutrition_entry' %}">
-    {%  csrf_token %}
-    {{ form }}
-    <input type="submit" value="Save">
-</form>
-</div>
+{#<div>#}
+{#<form method="post" action="{%  url 'new_nutrition_entry' %}">#}
+{#    {%  csrf_token %}#}
+{#    {{ form }}#}
+{#    <input type="submit" value="Save">#}
+{#</form>#}
+{#</div>#}
+
+{% for entry in nutrition_entries %}
+<div>{{ entry.name }}</div>
+{% endfor %}
