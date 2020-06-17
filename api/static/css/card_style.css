@@ -1,6 +1,42 @@
-#pe_ratio_parent{
-    /*padding: 3rem;*/
-    /*background-color: green;*/
-    /*font-size: 3rem;*/
-    /*font-size: 4rem;*/
+/*Taken from https://www.w3schools.com/howto/howto_css_glowing_text.asp*/
+.glow {
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
 }
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+#food-sroll{
+    height: 10rem;
+    overflow: scroll;
+}
+
+#new_food_list > h6, #new_food_list > button{
+  margin-top: 1rem;
+}
+
+/*@media screen and (max-width: 767px){*/
+  /*.card{*/
+  /*width: 8rem;*/
+/*}*/
+/*}*/
+
+
+
+/*@media screen and (min-width: 768px){*/
+  /*.card{*/
+  /*height: 140px;*/
+  /*display: table-cell;*/
+  /*vertical-align: middle;*/
+/*}*/
+/*}*/

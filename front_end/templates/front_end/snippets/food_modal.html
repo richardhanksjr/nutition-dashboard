@@ -47,7 +47,7 @@
 
 {#                Food log#}
                 <div id="nutrition_entries_for_day">
-                    <ul>
+                    <ul id="food-sroll">
                         {% for entry in entries %}
                             <form method="post" action="{% url 'delete_entry' %}">
                                 {% csrf_token %}

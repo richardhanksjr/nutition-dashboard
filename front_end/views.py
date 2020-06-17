@@ -6,7 +6,7 @@ from django.utils import timezone
 # from api.forms import NutritionEntryForm
 from api.models import NutritionEntry, Meal, Exercise
 
-GOLD = "background-color:#EEE8AA; border: 1px solid black;"
+GOLD = "background-color:black; border: 1px solid black;"
 RED = "background-color:red;"
 YELLOW = "background-color:yellow;"
 GREEN = "background-color:green;"
@@ -28,23 +28,29 @@ class Index(LoginRequiredMixin, TemplateView):
             context['total_protein_color'] = RED
         context['entries'] = nutrition_entries
         total_protein_for_day = sum([entry.protein_grams for entry in nutrition_entries])
-        total_energy = sum([entry.carb_grams + entry.fat_grams for entry in nutrition_entries])
+        total_energy = sum([(entry.carb_grams - entry.fiber_grams) + entry.fat_grams for entry in nutrition_entries])
         if total_energy:
             pe_ratio = total_protein_for_day / total_energy
+            print("pe_ratio 1", pe_ratio)
         else:
-            pe_ratio = 0
+            pe_ratio = total_protein_for_day
+            print("pe_ratio 2", pe_ratio)
         context['pe_ratio'] = pe_ratio
+        print('pe ratio is:', pe_ratio)
         if pe_ratio >= 2.5:
             context['pe_ratio_color'] = GOLD
+            context['pe_ratio_gold'] = True
         elif pe_ratio >= 1.5:
             context['pe_ratio_color'] = GREEN
         elif pe_ratio >= 1.0:
             context['pe_ratio_color'] = YELLOW
         else:
             context['pe_ratio_color'] = RED
+        print('pe_ratio is', pe_ratio)
         context['total_protein'] = total_protein_for_day
         user_ideal_weight = user.user_profile.ideal_body_weight
         if total_protein_for_day > (user_ideal_weight * 1.25):
+            context['protein_gold'] = True
             context['total_protein_color'] = GOLD
         elif total_protein_for_day > user_ideal_weight:
             context['total_protein_color'] = GREEN
@@ -62,6 +68,7 @@ class Index(LoginRequiredMixin, TemplateView):
                                                          date=today)
         if hit_exercises and low_intesity_exercises:
             context['exercise_color'] = GOLD
+            context['exercise_gold'] = True
         elif hit_exercises:
             context['exercise_color'] = GREEN
         elif low_intesity_exercises:
@@ -79,15 +86,15 @@ class Index(LoginRequiredMixin, TemplateView):
 
             last_meal_time = meals.last().time_entered
             end_eating_time = meals.first().time_entered + timezone.timedelta(
-                minutes=user.user_profile.num_hours_eating_window)
+                hours=user.user_profile.num_hours_eating_window)
             num_hours_yellow_window = 1
             if timezone.now() <= end_eating_time:
                 context['eating_time_color'] = GREEN
                 context['seconds_since_first_meal'] = (
-                        timezone.timedelta(minutes=user.user_profile.num_hours_eating_window)
+                        timezone.timedelta(hours=user.user_profile.num_hours_eating_window)
                         - (timezone.now() - meals.first().time_entered)).total_seconds()
             elif end_eating_time <= timezone.now() < last_meal_time + timezone.timedelta(
-                    minutes=num_hours_yellow_window) and last_meal_time > end_eating_time:
+                    hours=num_hours_yellow_window) and last_meal_time > end_eating_time:
                 context['in_yellow'] = True
                 context['eating_time_color'] = YELLOW
             elif end_eating_time <= timezone.now():

@@ -10,6 +10,7 @@ class Meal(models.Model):
     protein_grams = models.FloatField(null=False, blank=False)
     carb_grams = models.FloatField(null=False, blank=False)
     fat_grams = models.FloatField(null=False, blank=False)
+    fiber_grams = models.FloatField(null=False, blank=False)
     description = models.TextField(null=False, blank=False)
 
     class Meta:
@@ -23,11 +24,12 @@ class NutritionEntry(models.Model):
     protein_grams = models.FloatField(null=False, blank=False)
     carb_grams = models.FloatField(null=False, blank=False)
     fat_grams = models.FloatField(null=False, blank=False)
+    fiber_grams = models.FloatField(null=False, blank=False)
     description = models.TextField(null=False, blank=False)
     num_servings = models.FloatField(null=False, blank=False, default=1)
 
     def __str__(self):
-        return f"{self.user.username}--{self.date}: {self.food.name}"
+        return f"{self.user.username}--{self.date}: {self.description}"
 
     class Meta:
         verbose_name_plural = 'NutritionEntries'

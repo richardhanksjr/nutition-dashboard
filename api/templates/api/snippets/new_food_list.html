@@ -1,21 +1,35 @@
-
-    <ul>
+{% extends 'front_end/base.html' %}
+{% block content %}
+    <ul class="list-group">
         {% for ingredient in ingredients %}
-            <li>{{ ingredient }}</li>
+            <li class="list-group-item">{{ ingredient }}</li>
         {% endfor %}
     </ul>
-<form method="post" action="{% url 'add_new_food' %}">
-    {% csrf_token %}
-    <h6>{{ protein.label }}</h6>
-    <input type="hidden" name="description" value="{{ ingredients|join:' and '}}">
-    <input type="float" name="protein" placeholder="{{ protein.quantity|floatformat:2 }}" value="{{protein.quantity|floatformat:2 }} " required><div>{{ protein.unit }}</div>
+    <hr/>
+    <form method="post" action="{% url 'add_new_food' %}">
+        {% csrf_token %}
+        <div class="form-group" id="new_food_list">
 
-    <h6>{{ carbs.label }}</h6>
-    <input type="float" name="carbs" placeholder="{{ carbs.quantity|floatformat:2 }}" value="{{carbs.quantity|floatformat:2 }}" required><div>{{ carbs.unit }}</div>
+            <h6>{{ protein.label }} grams</h6>
+            <input type="hidden" name="description" value="{{ ingredients|join:' and ' }}">
+            <input type="float" class="form-control" name="protein" placeholder="{{ protein.quantity|floatformat:2 }}"
+                   value="{{ protein.quantity|floatformat:2 }} " required>
 
-    <h6>{{ fat.label }}</h6>
-    <input type="float" name="fat" placeholder="{{ fat.quantity|floatformat:2 }}" value="{{fat.quantity|floatformat:2 }}" required><div>{{ fat.unit }}</div>
-    <div>OPTIONAL: Enter meal name if you would like to save this meal for future use.</div>
-    <input type="text" name="meal_title" placeholder="Meal Title">
-    <input type="submit" value="submit">
-</form>
+            <h6>{{ carbs.label }} grams</h6>
+            <input type="float" name="carbs" class="form-control" placeholder="{{ carbs.quantity|floatformat:2 }}"
+                   value="{{ carbs.quantity|floatformat:2 }}" required>
+
+            <h6>{{ fiber.label }} grams</h6>
+            <input type="float" name="fiber" class="form-control" placeholder="{{ fiber.quantity|floatformat:2 }}"
+            value="{{ fiber.quantity|floatformat:2 }}" required>
+
+            <h6>{{ fat.label }} grams</h6>
+            <input type="float" name="fat" class="form-control" placeholder="{{ fat.quantity|floatformat:2 }}"
+                   value="{{ fat.quantity|floatformat:2 }}" required>
+            <h6>OPTIONAL: Enter meal name if you would like to save this meal for future use.</h6>
+            <input type="text" name="meal_title"  class="form-control" placeholder="Meal Title">
+            <button class="btn btn-primary">Submit</button>
+        </div>
+
+    </form>
+{% endblock %}

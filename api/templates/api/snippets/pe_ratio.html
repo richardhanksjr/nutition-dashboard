@@ -1,10 +1,16 @@
-{%  load static %}
+{% load static %}
 <div class="col-sm mt-2">
-{#    <h5 class="text-center">P:E Ratio:</h5>#}
-    <div id="pe_ratio_parent" class="card" style={{ pe_ratio_color }}>
-    <div class="card-body text-center">
-{#            {{ pe_ratio|floatformat:2 }}#}
-        P:E RATIO
-    </div>
-</div>
+    {% if pe_ratio_gold %}
+        <div id="pe_ratio_parent" class="card glow" style={{ pe_ratio_color }}>
+            <div class="card-body text-center">
+                P:E RATIO MAX
+            </div>
+        </div>
+    {% else %}
+        <div id="pe_ratio_parent" class="card" style={{ pe_ratio_color }}>
+            <div class="card-body text-center">
+                P:E RATIO
+            </div>
+        </div>
+    {% endif %}
 </div>

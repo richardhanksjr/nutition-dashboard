@@ -1,9 +1,16 @@
 {% load static %}
 <div class="col-sm mt-2">
-    {#    <h5 class="text-center">Exercise/Activity:</h5>#}
-    <div id="pe_ratio_parent" class="card" style={{ exercise_color }}>
-        <div class="card-body text-center">
-            EXERCISE
+    {% if exercise_gold %}
+        <div id="pe_ratio_parent" class="card glow" style="background-color:black;">
+            <div class="card-body text-center">
+                EXERCISE
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div id="pe_ratio_parent" class="card" style={{ exercise_color }}>
+            <div class="card-body text-center">
+                EXERCISE
+            </div>
+        </div>
+    {% endif %}
 </div>

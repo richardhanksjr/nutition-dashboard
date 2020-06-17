@@ -68,13 +68,7 @@ class NutritionEntryView(TemplateView):
 class NutritionEntryCreate(View):
 
     def post(self, request):
-        # form = NutritionEntryForm(request.POST)
-        # if form.is_valid():
-        #     food = form.cleaned_data['food']
-        #     num_servings = form.cleaned_data['num_servings']
-        #     user = request.user
-        #     NutritionEntry.objects.create(food=food, num_servings=num_servings,
-        #                                   user=user)
+
         return HttpResponse("works")
 
 
@@ -86,11 +80,16 @@ class NutritionAPISearch(TemplateView):
         search_term = self.request.GET.get('search_term').split(",")
 
         response = requests.post(EDAMAM_URL, json={"ingr": search_term}).json()
-        print(response)
-        context['protein'] = response['totalNutrients']['PROCNT']
-        context['carbs'] = response['totalNutrients']['CHOCDF']
-        context['fat'] = response['totalNutrients']['FAT']
-        context['ingredients'] = search_term
+
+        try:
+            context['protein'] = response['totalNutrients']['PROCNT']
+            context['carbs'] = response['totalNutrients']['CHOCDF']
+            context['fat'] = response['totalNutrients']['FAT']
+            context['fiber'] = response['totalNutrients']['FIBTG']
+            context['ingredients'] = search_term
+        except KeyError:
+            context['api_error'] = "There was an error with this request. " \
+                                   " Please alter the search term or do a manual entry"
         return context
 
 
@@ -99,14 +98,15 @@ class AddNewFood(LoginRequiredMixin, View):
         user = request.user
         protein = request.POST.get('protein')
         carbs = request.POST.get("carbs")
+        fiber = request.POST.get("fiber")
         fat = request.POST.get("fat")
         meal_title = request.POST.get("meal_title")
         description = request.POST.get("description")
-        # If we hav a meal title, we want to save this for future use
+        # If we have a meal title, we want to save this for future use
         if meal_title:
             meal = Meal.objects.create(protein_grams=protein, carb_grams=carbs, fat_grams=fat, name=meal_title,
-                                       description=description, user=user)
-        NutritionEntry.objects.create(user=user, protein_grams=protein, carb_grams=carbs, fat_grams=fat,
+                                       description=description, user=user, fiber_grams=fiber)
+        NutritionEntry.objects.create(user=user, protein_grams=protein, carb_grams=carbs, fat_grams=fat, fiber_grams=fiber,
                                       description=description)
         return HttpResponseRedirect(reverse('index'))
 
@@ -129,6 +129,7 @@ class DeleteEntry(LoginRequiredMixin, View):
         # if request.user is entry.user:
         entry.delete()
         return HttpResponseRedirect(reverse('index'))
+
 
 class DeleteExercise(LoginRequiredMixin, View):
     def post(self, request):
