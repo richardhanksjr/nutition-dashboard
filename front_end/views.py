@@ -72,27 +72,22 @@ class Index(LoginRequiredMixin, TemplateView):
         context['hit_exercises'] = hit_exercises
         context['low_intensity'] = low_intesity_exercises
 
-        meals = NutritionEntry.objects.filter(date=today, user=user).order_by('-time_entered')
+        meals = NutritionEntry.objects.filter(date=today, user=user).order_by('time_entered')
         # Only calculate eating window if we have a first meal.   In template, check for 'fasting'
         if meals.first():
             context['fasting'] = False
-            # first_meal_time = first_meal.time_entered
-            # eating_time = timezone.now() - first_meal_time
-            # if eating_time < timezone.timedelta(hours=user.user_profile.num_hours_eating_window):
-            #     context['eating_time_color'] = GREEN
-            # else:
-            #     context['eating_time_color'] = RED
+
             last_meal_time = meals.last().time_entered
             end_eating_time = meals.first().time_entered + timezone.timedelta(
-                hours=user.user_profile.num_hours_eating_window)
+                minutes=user.user_profile.num_hours_eating_window)
             num_hours_yellow_window = 1
             if timezone.now() <= end_eating_time:
                 context['eating_time_color'] = GREEN
                 context['seconds_since_first_meal'] = (
-                        timezone.timedelta(hours=user.user_profile.num_hours_eating_window)
+                        timezone.timedelta(minutes=user.user_profile.num_hours_eating_window)
                         - (timezone.now() - meals.first().time_entered)).total_seconds()
-            elif end_eating_time <= timezone.now() < end_eating_time + timezone.timedelta(
-                    hours=num_hours_yellow_window):
+            elif end_eating_time <= timezone.now() < last_meal_time + timezone.timedelta(
+                    minutes=num_hours_yellow_window) and last_meal_time > end_eating_time:
                 context['in_yellow'] = True
                 context['eating_time_color'] = YELLOW
             elif end_eating_time <= timezone.now():

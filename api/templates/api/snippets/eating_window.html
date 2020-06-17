@@ -1,7 +1,13 @@
 {% load static %}
-<script type="text/javascript">
 
-    let seconds_since_first_meal = {{ seconds_since_first_meal }}
+
+<script type="text/javascript">
+    {% if seconds_since_first_meal %}
+        let seconds_since_first_meal = {{ seconds_since_first_meal }}
+    {% else %}
+        let seconds_since_first_meal = 0
+    {% endif %}
+
 </script>
 
 <div class="col-sm mt-2">
