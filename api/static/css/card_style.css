@@ -16,13 +16,21 @@
   }
 }
 
-#food-sroll{
-    height: 10rem;
+div.container{
+    height: 100%;
     overflow: scroll;
 }
 
-#new_food_list > h6, #new_food_list > button{
+label{
+  font-size: .75rem;
+}
+
+#new_food_list > label,  #new_food_list > button{
   margin-top: 1rem;
+}
+
+.smaller-font{
+  font-size: .75rem;
 }
 
 /*@media screen and (max-width: 767px){*/

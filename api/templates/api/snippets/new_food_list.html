@@ -1,35 +1,49 @@
 {% extends 'front_end/base.html' %}
 {% block content %}
-    <ul class="list-group">
-        {% for ingredient in ingredients %}
-            <li class="list-group-item">{{ ingredient }}</li>
-        {% endfor %}
-    </ul>
-    <hr/>
-    <form method="post" action="{% url 'add_new_food' %}">
-        {% csrf_token %}
-        <div class="form-group" id="new_food_list">
+    <div id="new_food_list">
+        <ul class="list-group">
+            {% for ingredient in ingredients %}
+                <li class="list-group-item smaller-font">{{ ingredient }}</li>
+            {% endfor %}
+        </ul>
+        <hr/>
+        <form method="post" action="{% url 'add_new_food' %}">
+            {% csrf_token %}
+            <div class="form-group" id="new_food_list">
 
-            <h6>{{ protein.label }} grams</h6>
-            <input type="hidden" name="description" value="{{ ingredients|join:' and ' }}">
-            <input type="float" class="form-control" name="protein" placeholder="{{ protein.quantity|floatformat:2 }}"
-                   value="{{ protein.quantity|floatformat:2 }} " required>
+                <label for="protein_box">Protein grams</label>
+                <input type="hidden" name="description" value="{{ ingredients|join:' and ' }}">
+                <input type="range" class="custom-range" id="protein_slider" min="0" max="250"
+                       value="{{ protein.quantity }}">
+                <input type="float" class="form-control" name="protein" id="protein_box"
+                       value="{{ protein.quantity|floatformat:2 }} " required>
 
-            <h6>{{ carbs.label }} grams</h6>
-            <input type="float" name="carbs" class="form-control" placeholder="{{ carbs.quantity|floatformat:2 }}"
-                   value="{{ carbs.quantity|floatformat:2 }}" required>
 
-            <h6>{{ fiber.label }} grams</h6>
-            <input type="float" name="fiber" class="form-control" placeholder="{{ fiber.quantity|floatformat:2 }}"
-            value="{{ fiber.quantity|floatformat:2 }}" required>
+                <label for="carb_box">{{ carbs.label }} grams</label>
+                <input type="range" class="custom-range" id="carb_slider" min="0" max="250"
+                       value="{{ carbs.quantity }}">
+                <input type="float" name="carbs" class="form-control" placeholder="{{ carbs.quantity|floatformat:2 }}"
+                       value="{{ carbs.quantity|floatformat:2 }}" id="carb_box" required>
 
-            <h6>{{ fat.label }} grams</h6>
-            <input type="float" name="fat" class="form-control" placeholder="{{ fat.quantity|floatformat:2 }}"
-                   value="{{ fat.quantity|floatformat:2 }}" required>
-            <h6>OPTIONAL: Enter meal name if you would like to save this meal for future use.</h6>
-            <input type="text" name="meal_title"  class="form-control" placeholder="Meal Title">
-            <button class="btn btn-primary">Submit</button>
-        </div>
 
-    </form>
+                <label for="fiber_box">{{ fiber.label }} grams</label>
+                <input type="range" class="custom-range" id="fiber_slider" min="0" max="250"
+                       value="{{ fiber.quantity }}">
+                <input type="float" name="fiber" class="form-control" placeholder="{{ fiber.quantity|floatformat:2 }}"
+                       value="{{ fiber.quantity|floatformat:2 }}" id="fiber_box" required>
+
+                <label for="fat_box">{{ fat.label }} grams</label>
+                <input type="range" class="custom-range" id="fat_slider" min="0" max="250"
+                       value="{{ fat.quantity }}">
+                <input type="float" name="fat" class="form-control" placeholder="{{ fat.quantity|floatformat:2 }}"
+                       value="{{ fat.quantity|floatformat:2 }}" id="fat_box" required>
+
+                <label for="meal_title">OPTIONAL: Enter meal name if you would like to save this meal for future
+                    use.</label>
+                <input type="text" name="meal_title" class="form-control" placeholder="Meal Title" id="meal_title">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
 {% endblock %}

@@ -1,5 +1,9 @@
-body{
-    margin-top: 20px;
+html, body{
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
 }
 
 #modal-or{
@@ -14,6 +18,7 @@ select {
   -webkit-appearance: none;
 }
 
-/*button{*/
-/*width: 210px !important;*/
-/*}*/
+#new_food_list{
+    height: 100%;
+    overflow: scroll;
+}
