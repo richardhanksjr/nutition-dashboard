@@ -13,6 +13,8 @@ services:
       - SECRET_KEY="${SECRET_KEY}"
       - DEBUG="${DEBUG}"
       - ENVIRONMENT="${ENVIRONMENT}"
+      - EDAMAM_API_KEY=${EDAMAM_API_KEY}
+      - EDAMAM_APPLICATION_ID=${EDAMAM_APPLICATION_ID}
     volumes:
       - .:/code
     ports:
