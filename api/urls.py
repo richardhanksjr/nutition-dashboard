@@ -14,5 +14,7 @@ urlpatterns = [
     path('delete_entry', views.DeleteEntry.as_view(), name='delete_entry'),
     path('add_exercise', views.AddExercise.as_view(), name='add_exercise'),
     path('delete_exercise', views.DeleteExercise.as_view(), name='delete_exercise'),
+    path('add_meditation', views.AddMeditation.as_view(), name='add_meditation'),
+    path('delete_meditation', views.DeleteMeditation.as_view(), name='delete_meditation'),
 
 ]

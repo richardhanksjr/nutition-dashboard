@@ -10,6 +10,7 @@
         {% include 'api/snippets/protein_amount.html' %}
         {% include 'api/snippets/exercise.html' %}
         {% include 'api/snippets/eating_window.html' %}
+        {% include 'api/snippets/meditation.html' %}
     </div>
 
 
@@ -29,6 +30,13 @@
             </button>
         </div>
 
+            <div class="col-sm mt-2">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn-black" data-toggle="modal" data-target="#meditationModal">
+                Meditation
+            </button>
+        </div>
+
 
     </div>
 
@@ -37,6 +45,7 @@
 
     {% include 'front_end/snippets/food_modal.html' %}
     {% include 'front_end/snippets/exercise_modal.html' %}
+    {% include 'front_end/snippets/meditation_modal.html' %}
 
 
 

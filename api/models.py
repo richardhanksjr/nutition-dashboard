@@ -52,6 +52,8 @@ class Exercise(models.Model):
     date = models.DateField(auto_now_add=True)
 
 
-class StopEatingEvent(models.Model):
+class MeditationEvent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+

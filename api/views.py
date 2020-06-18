@@ -7,7 +7,7 @@ from django.views.generic.base import TemplateView
 from django.views import View
 from django.urls import reverse
 from .models import NutritionEntry
-from .models import Meal, NutritionEntry, Exercise
+from .models import Meal, NutritionEntry, Exercise, MeditationEvent
 # from .forms import NutritionEntryForm
 from django.utils.timezone import localdate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,8 +31,6 @@ nutrients = {
 
 EDAMAM_API_KEY = settings.EDAMAM_API_KEY
 EDAMAM_APPLICATION_ID = settings.EDAMAM_APPLICATION_ID
-print("app id is", EDAMAM_APPLICATION_ID)
-print("api key is", EDAMAM_API_KEY)
 EDAMAM_URL = f"https://api.edamam.com/api/nutrition-details?app_id={EDAMAM_APPLICATION_ID}&app_key={EDAMAM_API_KEY}"
 
 
@@ -52,7 +50,7 @@ class PERatio(LoginRequiredMixin, TemplateView):
         # total_energy = sum([entry.food.carb_grams + entry.food.fat_grams for entry in todays_entries])
         # context['pe_ratio'] = total_protein / total_energy
         # context['nutrition_entries'] = todays_entries
-        # return context
+        return context
 
 
 class NutritionEntryView(TemplateView):
@@ -80,7 +78,6 @@ class NutritionAPISearch(TemplateView):
         search_term = self.request.GET.get('search_term').split(",")
 
         response = requests.post(EDAMAM_URL, json={"ingr": search_term}).json()
-        print(response)
 
         try:
             context['protein'] = response['totalNutrients']['PROCNT']
@@ -149,6 +146,21 @@ class AddExercise(LoginRequiredMixin, View):
         exercise_number = request.POST.get("exercise_number")
         user = request.user
         Exercise.objects.create(user=user, exercise_type=exercises[exercise_number])
+        return HttpResponseRedirect(reverse('index'))
+
+
+class AddMeditation(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        MeditationEvent.objects.create(user=user)
+        return HttpResponseRedirect(reverse('index'))
+
+
+class DeleteMeditation(LoginRequiredMixin, View):
+    def post(self, request):
+        id = request.POST.get('id')
+        meditation = MeditationEvent.objects.get(id=id)
+        meditation.delete()
         return HttpResponseRedirect(reverse('index'))
 
 

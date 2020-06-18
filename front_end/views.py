@@ -4,7 +4,7 @@ from django.utils.timezone import localtime
 from django.utils import timezone
 
 # from api.forms import NutritionEntryForm
-from api.models import NutritionEntry, Meal, Exercise
+from api.models import NutritionEntry, Meal, Exercise, MeditationEvent as Meditation
 
 GOLD = "background-color:black; border: 1px solid black;"
 RED = "background-color:#CC0A37;"
@@ -109,4 +109,15 @@ class Index(LoginRequiredMixin, TemplateView):
         else:
             context['fasting'] = True
             context['eating_time_color'] = GREEN
+
+        meditations = Meditation.objects.filter(date=today, user=user)
+        num_meditations = meditations.count()
+        if num_meditations > 1:
+            context['meditation_color'] = GREEN
+        elif num_meditations == 1:
+            context['meditation_color'] = YELLOW
+        else:
+            context['meditation_color'] = RED
+        context['meditations'] = meditations
+
         return context

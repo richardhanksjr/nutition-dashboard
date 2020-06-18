@@ -1,10 +1,5 @@
 from django.contrib import admin
-# from .models import NutritionEntry, Food
-#
-# admin.site.register(NutritionEntry)
-# admin.site.register(Food)
-
-# Register your models here.
+from api.models import MeditationEvent
 
 
 from .models import UserProfile
@@ -21,3 +16,8 @@ class UserProfileInline(admin.TabularInline):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     inlines = [UserProfileInline]
+
+
+@admin.register(MeditationEvent)
+class MeditationAdmin(admin.ModelAdmin):
+    pass
