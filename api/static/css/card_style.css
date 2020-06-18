@@ -4,7 +4,7 @@
   text-align: center;
   -webkit-animation: glow 1s ease-in-out infinite alternate;
   -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 500ms ease-in-out infinite alternate;
 }
 
 @-webkit-keyframes glow {
@@ -25,12 +25,25 @@ label{
   font-size: .75rem;
 }
 
+#new_food_list{
+  margin-top: 20px;
+  color: black;
+}
 #new_food_list > label,  #new_food_list > button{
   margin-top: 1rem;
 }
 
 .smaller-font{
   font-size: .75rem;
+}
+
+.rounded-card{
+  width: 100%;
+  -moz-border-radius-topleft: 100%;
+}
+
+.modal{
+  color: black;
 }
 
 /*@media screen and (max-width: 767px){*/

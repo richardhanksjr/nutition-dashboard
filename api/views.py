@@ -80,6 +80,7 @@ class NutritionAPISearch(TemplateView):
         search_term = self.request.GET.get('search_term').split(",")
 
         response = requests.post(EDAMAM_URL, json={"ingr": search_term}).json()
+        print(response)
 
         try:
             context['protein'] = response['totalNutrients']['PROCNT']
@@ -116,7 +117,8 @@ class AddExistingMeal(LoginRequiredMixin, View):
         user = request.user
         meal_name = request.POST.get("existing_meal_name")
         meal = Meal.objects.get(user=user, name=meal_name)
-        NutritionEntry.objects.create(user=user, protein_grams=meal.protein_grams, carb_grams=meal.carb_grams, fat_grams=meal.fat_grams,
+        NutritionEntry.objects.create(user=user, protein_grams=meal.protein_grams, carb_grams=meal.carb_grams,
+                                      fat_grams=meal.fat_grams, fiber_grams=meal.fiber_grams,
                                       description=meal.description)
         return HttpResponseRedirect(reverse('index'))
 

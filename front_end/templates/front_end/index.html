@@ -5,7 +5,7 @@
 {% block content %}
     {#    <div id="pe_ratio">+</div>#}
     {#    <div id="pe_ratio_content"></div>#}
-    <div class="row">
+    <div class="row indicators">
         {% include 'api/snippets/pe_ratio.html' %}
         {% include 'api/snippets/protein_amount.html' %}
         {% include 'api/snippets/exercise.html' %}
@@ -13,28 +13,22 @@
     </div>
 
 
-    <div class="row mt-4">
+
+    <div class="row mt-4 buttons">
         <!-- Button trigger modal -->
         <div class="col-sm mt-2">
-            <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn-black" data-toggle="modal" data-target="#exampleModal">
                 Food
             </button>
         </div>
 
         <div class="col-sm mt-2">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#exerciseModal">
+            <button type="button" class="btn-black" data-toggle="modal" data-target="#exerciseModal">
                 Exercise
             </button>
         </div>
-{#        <div class="col-sm mt-2">#}
-{#            <!-- Button trigger modal -->#}
-{#            <form action="get" action="{% url 'stop_eating_window' %}">#}
-{#                <button type="button" class="btn btn-block btn-secondary" id="stop-eating-">#}
-{#                    Stop eating#}
-{#                </button>#}
-{#            </form>#}
-{#        </div>#}
+
 
     </div>
 

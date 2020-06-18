@@ -7,9 +7,9 @@ from django.utils import timezone
 from api.models import NutritionEntry, Meal, Exercise
 
 GOLD = "background-color:black; border: 1px solid black;"
-RED = "background-color:red;"
-YELLOW = "background-color:yellow;"
-GREEN = "background-color:green;"
+RED = "background-color:#CC0A37;"
+YELLOW = "background-color:#FF8003;"
+GREEN = "background-color:#03DAC5;"
 
 
 class Index(LoginRequiredMixin, TemplateView):

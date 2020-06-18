@@ -27,17 +27,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # where we try to run collectstatic before the secret key is set.  The actual application will still use
 # the actual environment variable so the SECRET_KEY won't change each time!
 SECRET_KEY = os.environ.get('SECRET_KEY', default=get_random_secret_key())
-print("secret key", SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', default=0)
-# TODO remove the API keys
-USDA_API_KEY = os.environ.get('USDA_API_KEY', "DWcvbkEcOR0UdxWBgQXpUUGjYNbPDM78pjvyJDGd")
-print("USDA KEY", USDA_API_KEY)
-EDAMAM_API_KEY = os.environ.get("EDAMAM_API_KEY", "c4c0732952741ce9969ad5a4d1e130f4")
-print("api key SETTINGS", EDAMAM_API_KEY)
+USDA_API_KEY = os.environ.get('USDA_API_KEY')
+EDAMAM_API_KEY = os.environ.get("EDAMAM_API_KEY")
 
-EDAMAM_APPLICATION_ID = os.environ.get("EDAMAM_APPLICATION_ID", "66aa7611")
+EDAMAM_APPLICATION_ID = os.environ.get("EDAMAM_APPLICATION_ID")
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 

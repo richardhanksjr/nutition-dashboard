@@ -14,10 +14,16 @@
 
 <link rel="stylesheet" href="{%  static 'css/base_style.css' %}">
 <link rel="stylesheet" href="{% static 'css/card_style.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
 
 </head>
 <body>
-<div class="container">
+<nav class="navbar navbar-default navbar-fixed-bottom pe-nav">
+  <div class="container">
+    P:E RATIO
+  </div>
+</nav>
+<div class="container-fluid">
     {% block content %}
 
     {% endblock %}
@@ -36,6 +42,7 @@
 <script src="{% static 'js/nutrition_api.js' %}"></script>
 <script src="{% static 'js/clock.js' %}"></script>
 <script src="{% static 'js/slider.js' %}"></script>
+<script src="{% static 'js/speedometer.js' %}"></script>
 
 
 </body>
