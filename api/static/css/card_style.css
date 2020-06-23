@@ -38,26 +38,25 @@ label{
 }
 
 .rounded-card{
-  width: 100%;
-  -moz-border-radius-topleft: 100%;
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }
 
 .modal{
   color: black;
 }
 
-/*@media screen and (max-width: 767px){*/
-  /*.card{*/
-  /*width: 8rem;*/
-/*}*/
-/*}*/
+.progress_bar{
+  width: 100%;
+  transition: width 2s;
+}
 
 
-
-/*@media screen and (min-width: 768px){*/
-  /*.card{*/
-  /*height: 140px;*/
-  /*display: table-cell;*/
-  /*vertical-align: middle;*/
-/*}*/
+/*progress {*/
+  /*background-color: #f3f3f3;*/
+  /*border: 0;*/
+  /*height: 18px;*/
+  /*border-radius: 9px;*/
 /*}*/

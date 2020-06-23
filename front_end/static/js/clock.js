@@ -1,3 +1,5 @@
+let progress, display;
+const original_seconds = seconds_since_first_meal;
 
 function startTimer(duration, display) {
     var timer = duration, minutes, seconds, hours;
@@ -13,7 +15,8 @@ function startTimer(duration, display) {
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
         display.textContent = hours + ":" + minutes + ":" + seconds;
-
+        // console.log(seconds_since_first_meal, timer)
+        // progress.style.width = timer / original_seconds;
         if (--timer < 0) {
             clearInterval(startTimer);
             location.reload();
@@ -27,6 +30,7 @@ window.onload = function () {
         if (timer === 0){
             return;
     }
-        display = document.getElementById('clock');
+    display = document.getElementById('clock');
+    progress = document.getElementById('fasting_progress');
     startTimer(timer, display);
 };

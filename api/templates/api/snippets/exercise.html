@@ -1,15 +1,47 @@
 {% load static %}
 <div class="col-sm mt-2">
+    {#    {% if exercise_gold %}#}
+    {#        <div id="pe_ratio_parent" class="card glow" style="background-color:black;">#}
+    {#            <div class="card-body text-center">#}
+    {#                EXERCISE#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% else %}#}
+    {#        <div id="pe_ratio_parent" class="card" style={{ exercise_color }}>#}
+    {#            <div class="card-body text-center">#}
+    {#                EXERCISE#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endif %}#}
+    <h6 class="text-center">Exercise</h6>
     {% if exercise_gold %}
-        <div id="pe_ratio_parent" class="card glow" style="background-color:black;">
-            <div class="card-body text-center">
-                EXERCISE
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                 style="width: {{ exercise_width }}%; transition: width 2s;" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ exercise_text }}
             </div>
         </div>
-    {% else %}
-        <div id="pe_ratio_parent" class="card" style={{ exercise_color }}>
-            <div class="card-body text-center">
-                EXERCISE
+
+    {% elif exercise_green %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ exercise_text }}
+            </div>
+        </div>
+    {% elif exercise_yellow %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ exercise_text }}
+            </div>
+        </div>
+    {% elif exercise_red %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ exercise_text }}
             </div>
         </div>
     {% endif %}

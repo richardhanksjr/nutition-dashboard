@@ -31,13 +31,10 @@ class Index(LoginRequiredMixin, TemplateView):
         total_energy = sum([(entry.carb_grams - entry.fiber_grams) + entry.fat_grams for entry in nutrition_entries])
         if total_energy:
             pe_ratio = total_protein_for_day / total_energy
-            print("pe_ratio 1", pe_ratio)
         else:
             pe_ratio = total_protein_for_day
-            print("pe_ratio 2", pe_ratio)
         context['pe_ratio'] = pe_ratio
-        print('pe ratio is:', pe_ratio)
-        if pe_ratio >= 2.5:
+        if pe_ratio >= 2:
             context['pe_ratio_color'] = GOLD
             context['pe_ratio_gold'] = True
         elif pe_ratio >= 1.5:
@@ -69,12 +66,25 @@ class Index(LoginRequiredMixin, TemplateView):
         if hit_exercises and low_intesity_exercises:
             context['exercise_color'] = GOLD
             context['exercise_gold'] = True
+            context['exercise_gold'] = True
+            context['exercise_width'] = 100
+            context['exercise_text'] = "HIT + Activity!"
         elif hit_exercises:
             context['exercise_color'] = GREEN
+            context['exercise_green'] = True
+            context['exercise_width'] = 100
+            context['exercise_text'] = "HIT"
+
         elif low_intesity_exercises:
             context['exercise_color'] = YELLOW
+            context['exercise_yellow']= True
+            context['exercise_width'] = 50
+            context['exercise_text'] = "Activity"
         else:
             context['exercise_color'] = RED
+            context['exercise_red'] = True
+            context['exercise_width'] = 15
+            # context['exercise_text'] = "Nothing..."
 
         context['hit_exercises'] = hit_exercises
         context['low_intensity'] = low_intesity_exercises
@@ -89,35 +99,47 @@ class Index(LoginRequiredMixin, TemplateView):
                 hours=user.user_profile.num_hours_eating_window)
             num_hours_yellow_window = 1
             if timezone.now() <= end_eating_time:
-                context['eating_time_color'] = GREEN
+                context['fasting_width'] = 100
+                context['fasting_green'] = True
                 context['seconds_since_first_meal'] = (
                         timezone.timedelta(hours=user.user_profile.num_hours_eating_window)
                         - (timezone.now() - meals.first().time_entered)).total_seconds()
             elif end_eating_time <= timezone.now() < last_meal_time + timezone.timedelta(
                     hours=num_hours_yellow_window) and last_meal_time > end_eating_time:
                 context['in_yellow'] = True
-                context['eating_time_color'] = YELLOW
+                context['fasting_width'] = 50
+                context['fasting_yellow'] = True
+                context['fasting_text'] = 'OUTSIDE OF EATING WINDOW'
             elif end_eating_time <= timezone.now():
+                context['fasting_width'] = 100
                 context['eating_done_green'] = True
-                context['eating_time_color'] = GREEN
+                context['fasting_green'] = True
+                context['fasting_text'] = 'OUTSIDE OF EATING WINDOW'
             else:
+                context['fasting_width'] = 15
                 context['in_red'] = True
-                context['eating_time_color'] = RED
-
-
+                context['fasting_red'] = True
+                context['fasting_text'] = 'OUTSIDE OF EATING WINDOW'
 
         else:
             context['fasting'] = True
             context['eating_time_color'] = GREEN
+            context['fasting_green'] = True
+            context['fasting_width'] = 100
+            context['fasting_text'] = 'FASTING'
 
         meditations = Meditation.objects.filter(date=today, user=user)
         num_meditations = meditations.count()
         if num_meditations > 1:
-            context['meditation_color'] = GREEN
+            context['meditation_green'] = True
+            context['meditation_width'] = 100
         elif num_meditations == 1:
-            context['meditation_color'] = YELLOW
+            context['meditation_yellow'] = True
+            context['meditation_width'] = 50
         else:
-            context['meditation_color'] = RED
+            context['meditation_red'] = True
+            context['meditation_width'] = 15
+        context['meditation_text'] = f"{num_meditations}/2"
         context['meditations'] = meditations
 
         return context

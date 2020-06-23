@@ -4,41 +4,76 @@
 <script type="text/javascript">
     {% if seconds_since_first_meal %}
         let seconds_since_first_meal = {{ seconds_since_first_meal }}
-    {% else %}
-        let seconds_since_first_meal = 0
+            {% else %}
+            let seconds_since_first_meal = 0
     {% endif %}
 
 </script>
 
 <div class="col-sm mt-2">
+    {#    {% if fasting %}#}
+    {#        <div id="pe_ratio_parent" class="card rounded-card" style={{ eating_time_color }}>#}
+    {#            <div class="card-body text-center">#}
+    {#                FASTING#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% elif in_yellow or in_red %}#}
+    {#        <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>#}
+    {#            <div class="card-body text-center">#}
+    {#                OUTSIDE EATING WINDOW#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        {% elif eating_done_green %}#}
+    {#                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>#}
+    {#            <div class="card-body text-center">#}
+    {#                EATING DONE FOR TODAY#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        {% else %}#}
+    {#                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>#}
+    {#            <div class="card-body text-center">#}
+    {#                Eating Time Left: <span id="clock"></span>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endif %}#}
+
+    {#    <canvas id="eating_window" width="440" height="220">#}
+    {#			Canvas not available.#}
+    {#		</canvas>#}
+
+    <h6 class="text-center">Fasting</h6>
     {% if fasting %}
-        <div id="pe_ratio_parent" class="card rounded-card" style={{ eating_time_color }}>
-            <div class="card-body text-center">
-                FASTING
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                 id="fasting_progress"
+                 style="width: {{ fasting_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ fasting_text }}
             </div>
         </div>
-    {% elif in_yellow or in_red %}
-        <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
-            <div class="card-body text-center">
-                OUTSIDE EATING WINDOW
+    {% elif fasting_green %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                 id="fasting_progress"
+                 style="width: {{ fasting_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                <span id="clock"></span>
             </div>
         </div>
-        {% elif eating_done_green %}
-                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
-            <div class="card-body text-center">
-                EATING DONE FOR TODAY
+    {% elif fasting_yellow %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
+                 id="fasting_progress"
+                 style="width: {{ fasting_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ fasting_text }}
             </div>
         </div>
-        {% else %}
-                <div id="pe_ratio_parent" class="card" style={{ eating_time_color }}>
-            <div class="card-body text-center">
-                Eating Time Left: <span id="clock"></span>
+    {% elif fasting_red %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
+                 id="fasting_progress"
+                 style="width: {{ fasting_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                {{ fasting_text }}
             </div>
         </div>
     {% endif %}
-
-{#    <canvas id="eating_window" width="440" height="220">#}
-{#			Canvas not available.#}
-{#		</canvas>#}
 
 </div>
