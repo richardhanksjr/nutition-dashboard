@@ -1,16 +1,51 @@
 {% load static %}
+{#<div class="col-sm mt-2">#}
+{#    {% if pe_ratio_gold %}#}
+{#        <div id="pe_ratio_parent" class="card glow" style={{ pe_ratio_color }}>#}
+{#            <div class="card-body text-center">#}
+{#                P:E RATIO MAX#}
+{#            </div>#}
+{#        </div>#}
+{#    {% else %}#}
+{#        <div id="pe_ratio_parent" class="card" style={{ pe_ratio_color }}>#}
+{#            <div class="card-body text-center">#}
+{#                P:E RATIO#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#</div>#}
+
+
 <div class="col-sm mt-2">
-    {% if pe_ratio_gold %}
-        <div id="pe_ratio_parent" class="card glow" style={{ pe_ratio_color }}>
-            <div class="card-body text-center">
-                P:E RATIO MAX
-            </div>
+
+<h6 class="text-center">P:E Ratio</h6>
+{% if pe_gold %}
+    <div class="progress" style="height: 40px; background-color: #6e6b71;">
+        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+             style="width: {{ pe_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+            {{ pe_text|floatformat:2  }}
         </div>
-    {% else %}
-        <div id="pe_ratio_parent" class="card" style={{ pe_ratio_color }}>
-            <div class="card-body text-center">
-                P:E RATIO
-            </div>
+    </div>
+{% elif pe_green %}
+    <div class="progress" style="height: 40px; background-color: #6e6b71;">
+        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+             style="width: {{ pe_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+            {{ pe_text|floatformat:2 }}
         </div>
-    {% endif %}
+    </div>
+{% elif pe_yellow %}
+    <div class="progress" style="height: 40px; background-color: #6e6b71;">
+        <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
+             style="width: {{ pe_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+            {{ pe_text|floatformat:2 }}
+        </div>
+    </div>
+{% elif pe_red %}
+    <div class="progress" style="height: 40px; background-color: #6e6b71;">
+        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
+             style="width: {{ pe_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+            {{ pe_text|floatformat:2 }}g
+        </div>
+    </div>
+{% endif %}
 </div>

@@ -12,6 +12,7 @@ from .models import Meal, NutritionEntry, Exercise, MeditationEvent
 from django.utils.timezone import localdate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.utils.timezone import now
 
 # Mapping of unit ids and their respective unit abbreviations
 units = {
@@ -66,7 +67,6 @@ class NutritionEntryView(TemplateView):
 class NutritionEntryCreate(View):
 
     def post(self, request):
-
         return HttpResponse("works")
 
 
@@ -104,7 +104,8 @@ class AddNewFood(LoginRequiredMixin, View):
         if meal_title:
             meal = Meal.objects.create(protein_grams=protein, carb_grams=carbs, fat_grams=fat, name=meal_title,
                                        description=description, user=user, fiber_grams=fiber)
-        NutritionEntry.objects.create(user=user, protein_grams=protein, carb_grams=carbs, fat_grams=fat, fiber_grams=fiber,
+        NutritionEntry.objects.create(user=user, protein_grams=protein, carb_grams=carbs, fat_grams=fat,
+                                      fiber_grams=fiber,
                                       description=description)
         return HttpResponseRedirect(reverse('index'))
 
@@ -114,9 +115,14 @@ class AddExistingMeal(LoginRequiredMixin, View):
         user = request.user
         meal_name = request.POST.get("existing_meal_name")
         meal = Meal.objects.get(user=user, name=meal_name)
-        NutritionEntry.objects.create(user=user, protein_grams=meal.protein_grams, carb_grams=meal.carb_grams,
-                                      fat_grams=meal.fat_grams, fiber_grams=meal.fiber_grams,
-                                      description=meal.description)
+        entry, created = NutritionEntry.objects.get_or_create(user=user, protein_grams=meal.protein_grams,
+                                                              carb_grams=meal.carb_grams,
+                                                              fat_grams=meal.fat_grams, fiber_grams=meal.fiber_grams,
+                                                              description=meal.description, date=now().date())
+        # If the user has added another same entry instead of changing the servings amount, use the same entry and increment the count
+        if not created:
+            entry.num_servings += 1
+            entry.save()
         return HttpResponseRedirect(reverse('index'))
 
 
@@ -164,4 +170,11 @@ class DeleteMeditation(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('index'))
 
 
-
+class UpdateServingQuantity(LoginRequiredMixin, View):
+    def post(self, request):
+        id = request.POST.get('id')
+        entry = NutritionEntry.objects.get(id=id)
+        num_servings = request.POST.get('num_servings')
+        entry.num_servings = num_servings
+        entry.save()
+        return HttpResponseRedirect(reverse('index'))
