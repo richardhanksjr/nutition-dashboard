@@ -54,26 +54,38 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
-
-                                        <form method="post" action="{% url 'delete_entry' %}">
-                                            <div class="form-group">
+                                        <div class="row">
+                                            <form method="post" action="{% url 'delete_entry' %}">
+                                                <div class="form-group">
+                                                    {% csrf_token %}
+                                                    <input class="form-control" type="hidden" name="id"
+                                                           value="{{ entry.id }}">
+                                                    <button class="btn btn-danger w-100">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <form method="post" action="{% url 'add_one_serving' %}">
                                                 {% csrf_token %}
-                                                <input class="form-control" type="hidden" name="id"
-                                                       value="{{ entry.id }}">
-                                                <button class="btn btn-danger">Delete</button>
-                                            </div>
-                                        </form>
+                                                <input type="hidden" name="id" value="{{ entry.id }}">
+                                                <button class="btn btn-primary w-70">+1 Serving</button>
+                                            </form>
+                                        </div>
                                     </div>
+
 
                                     <div class="col">
                                         <div class="row">
                                             <form method="post" action="{% url 'update_quantity' %}">
                                                 <div class="form-group">
                                                     {% csrf_token %}
-                                                    <input class="form-control col" name="num_servings" type="number" min=0
+                                                    <input class="form-control col w-50" name="num_servings"
+                                                           type="number"
+                                                           min=0
                                                            value="{{ entry.num_servings }}">
                                                     <input type="hidden" name="id" value="{{ entry.id }}">
-                                                    <button class="btn btn-success col">Update Quantity</button>
+                                                    <button class="btn btn-success col mt-2 w-50">Update Quantity
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>

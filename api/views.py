@@ -178,3 +178,11 @@ class UpdateServingQuantity(LoginRequiredMixin, View):
         entry.num_servings = num_servings
         entry.save()
         return HttpResponseRedirect(reverse('index'))
+
+class AddOneServing(LoginRequiredMixin, View):
+    def post(self, request):
+        id = request.POST.get('id')
+        entry = NutritionEntry.objects.get(id=id)
+        entry.num_servings += 1
+        entry.save()
+        return HttpResponseRedirect(reverse('index'))
