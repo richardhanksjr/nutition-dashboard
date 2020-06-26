@@ -17,6 +17,7 @@ class Index(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         RED_WIDTH = 25
+        PE_GREEN_GOAL = 1.75
         user = self.request.user
         today = localtime(timezone.now()).date()
         context = super().get_context_data(**kwargs)
@@ -36,17 +37,17 @@ class Index(LoginRequiredMixin, TemplateView):
             pe_ratio = total_protein_for_day / total_energy
         else:
             pe_ratio = total_protein_for_day
-        context['pe_text'] = pe_ratio
+        context['pe_text'] = f"{pe_ratio:.2f}/{PE_GREEN_GOAL}"
         if pe_ratio >= 2:
             context['pe_gold'] = True
             context['pe_width'] = 100
             context['pe_ratio_color'] = GOLD
             context['pe_ratio_gold'] = True
-        elif pe_ratio >= 1.5:
+        elif pe_ratio >= PE_GREEN_GOAL:
             context['pe_ratio_color'] = GREEN
             context['pe_green'] = True
             context['pe_width'] = 100
-        elif pe_ratio >= 1.0:
+        elif pe_ratio >= 1.2:
             context['pe_yellow'] = True
             context['pe_width'] = 50
             context['pe_ratio_color'] = YELLOW
@@ -74,7 +75,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_width'] = RED_WIDTH
             context['total_protein_color'] = RED
 
-        context['protein_text'] = total_protein_for_day
+        context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight}"
 
         context['exercise_choices'] = Exercise.get_exercise_type_display(Exercise)
         hit_exercises = Exercise.objects.filter(user=self.request.user,

@@ -6,7 +6,7 @@ services:
 #                      python /code/manage.py migrate &&
 #                      gunicorn nutrition.wsgi -b 0.0.0.0:8000
 #                      "
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8001
     env_file:
       - .env
     environment:
@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - 8000:8000
+      - 8001:8001
     depends_on:
       - db
   db:

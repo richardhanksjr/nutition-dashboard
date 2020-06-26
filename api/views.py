@@ -186,3 +186,5 @@ class AddOneServing(LoginRequiredMixin, View):
         entry.num_servings += 1
         entry.save()
         return HttpResponseRedirect(reverse('index'))
+
+

@@ -4,30 +4,30 @@
 <h6 class="text-center">Total Protein</h6>
 {% if protein_gold %}
     <div class="progress" style="height: 40px; background-color: #6e6b71;">
-        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+        <div class="progress-bar glow" role="progressbar"
              style="width: {{ protein_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
-            {{ protein_text|floatformat:2 }}g
+            {{ protein_text }}g
         </div>
     </div>
 {% elif protein_green %}
     <div class="progress" style="height: 40px; background-color: #6e6b71;">
         <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
              style="width: {{ protein_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
-            {{ protein_text|floatformat:2 }}g
+            {{ protein_text}}g
         </div>
     </div>
 {% elif protein_yellow %}
     <div class="progress" style="height: 40px; background-color: #6e6b71;">
         <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
              style="width: {{ protein_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
-            {{ protein_text|floatformat:2 }}g
+            {{ protein_text }}g
         </div>
     </div>
 {% elif protein_red %}
     <div class="progress" style="height: 40px; background-color: #6e6b71;">
         <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
              style="width: {{ protein_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
-            {{ protein_text|floatformat:2 }}g
+            {{ protein_text }}g
         </div>
     </div>
 {% endif %}
