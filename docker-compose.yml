@@ -2,11 +2,11 @@ version: '3.7'
 services:
   web:
     build: .
-#    command: bash -c "python /code/manage.py collectstatic --noinput &&
-#                      python /code/manage.py migrate &&
-#                      gunicorn nutrition.wsgi -b 0.0.0.0:8000
-#                      "
-    command: python manage.py runserver 0.0.0.0:8001
+    command: bash -c "python /code/manage.py collectstatic --noinput &&
+                      python /code/manage.py migrate &&
+                      python manage.py runserver 0.0.0.0:8001
+                     "
+#    command: python manage.py runserver 0.0.0.0:8001  python manage.py migrate
     env_file:
       - .env
     environment:

@@ -12,6 +12,7 @@ dj-database-url = "==0.5.0"
 whitenoise = "*"
 gunicorn = "*"
 requests = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"

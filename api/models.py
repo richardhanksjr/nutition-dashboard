@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
 
 User = get_user_model()
 
@@ -37,7 +38,7 @@ class NutritionEntry(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
-    ideal_body_weight = models.IntegerField(null=False, blank=False)
+    ideal_body_weight = models.IntegerField(null=False, blank=False, default=150)
     num_hours_eating_window = models.IntegerField(null=False, blank=False, default=8)
     include_meditation_in_app = models.BooleanField(default=False)
 
@@ -57,3 +58,9 @@ class MeditationEvent(models.Model):
     date = models.DateField(auto_now_add=True)
 
 
+def create_profile(sender,**kwargs ):
+    if kwargs['created']:
+        UserProfile.objects.create(user=kwargs['instance'])
+
+
+post_save.connect(create_profile,sender=User)
