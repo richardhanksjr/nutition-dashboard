@@ -41,6 +41,7 @@ class UserProfile(models.Model):
     ideal_body_weight = models.IntegerField(null=False, blank=False, default=150)
     num_hours_eating_window = models.IntegerField(null=False, blank=False, default=8)
     include_meditation_in_app = models.BooleanField(default=False)
+    plan = models.OneToOneField('Plan', blank=False, related_name='user_plan')
 
 
 class Exercise(models.Model):
@@ -64,3 +65,4 @@ def create_profile(sender,**kwargs ):
 
 
 post_save.connect(create_profile,sender=User)
+
