@@ -38,8 +38,8 @@ class NutritionEntry(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     ideal_body_weight = models.IntegerField(null=False, blank=False)
-    num_hours_eating_window = models.IntegerField(null=False, blank=False, default=8)
     include_meditation_in_app = models.BooleanField(default=False)
+    plan = models.OneToOneField('Plan', blank=False, related_name='user_plan')
 
 
 class Exercise(models.Model):
@@ -55,5 +55,9 @@ class Exercise(models.Model):
 class MeditationEvent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+
+class Plan(models.Model):
+
 
 
