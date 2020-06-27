@@ -15,6 +15,7 @@ GREEN = "background-color:#03DAC5;"
 class Index(LoginRequiredMixin, TemplateView):
     template_name = 'front_end/index.html'
     RED_WIDTH = 25
+    PROTEIN_MULTIPLIER = 1.25
     today = localtime(timezone.now()).date()
 
     def _pe_ratio(self, context, total_protein_for_day, total_energy):
@@ -41,7 +42,7 @@ class Index(LoginRequiredMixin, TemplateView):
 
     def _protein_context(self, context, total_protein_for_day):
         user_ideal_weight = self.request.user.user_profile.ideal_body_weight
-        if total_protein_for_day > (user_ideal_weight * 1.25):
+        if total_protein_for_day > (user_ideal_weight * self.PROTEIN_MULTIPLIER *1.25):
             context['protein_gold'] = True
             context['total_protein_color'] = GOLD
             context['protein_width'] = 100
@@ -50,7 +51,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_green'] = True
             context['protein_width'] = 100
 
-        elif total_protein_for_day > user_ideal_weight * .66:
+        elif total_protein_for_day > user_ideal_weight * self.PROTEIN_MULTIPLIER * .66:
             context['protein_yellow'] = True
             context['protein_width'] = 50
             context['total_protein_color'] = YELLOW
@@ -59,7 +60,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_width'] = self.RED_WIDTH
             context['total_protein_color'] = RED
 
-        context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight}"
+        context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight * self.PROTEIN_MULTIPLIER}"
         return context
 
     def _exercise_context(self, context):
