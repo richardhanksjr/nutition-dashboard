@@ -38,6 +38,7 @@ class NutritionEntry(models.Model):
 
 class UserProfile(models.Model):
     PLAN_CHOICES = [
+        ('super_charged', 'Super Charged'),
         ('aggressive', 'Aggressive Weight Loss'),
         ('moderate', 'Moderate Weight Loss'),
         ('slow', 'Slow Weight Loss'),

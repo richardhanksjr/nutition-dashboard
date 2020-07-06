@@ -18,6 +18,12 @@ class Index(LoginRequiredMixin, TemplateView):
     today = localtime(timezone.now()).date()
 
     _plan_details = {
+        'super_charged': {
+            "protein_multiplier": 1.5,
+            "pe_ratio": 2,
+            "med_relax": 3,
+            "eating_window": 4
+        },
         'aggressive': {
             'protein_multiplier': 1.4,
             'pe_ratio': 1.75,
@@ -191,7 +197,6 @@ class Index(LoginRequiredMixin, TemplateView):
         # TODO Change this back to user
         # context['meals'] = Meal.objects.filter(user=user)
         context['meals'] = Meal.objects.all()
-
 
         context['entries'] = nutrition_entries
         total_protein_for_day = sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
