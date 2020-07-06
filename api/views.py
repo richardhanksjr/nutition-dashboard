@@ -114,7 +114,9 @@ class AddExistingMeal(LoginRequiredMixin, View):
     def post(self, request):
         user = request.user
         meal_name = request.POST.get("existing_meal_name")
-        meal = Meal.objects.get(user=user, name=meal_name)
+        # TODO change this back to user
+        # meal = Meal.objects.get(user=user, name=meal_name)
+        meal = Meal.objects.get(name=meal_name)
         entry, created = NutritionEntry.objects.get_or_create(user=user, protein_grams=meal.protein_grams,
                                                               carb_grams=meal.carb_grams,
                                                               fat_grams=meal.fat_grams, fiber_grams=meal.fiber_grams,
@@ -178,6 +180,7 @@ class UpdateServingQuantity(LoginRequiredMixin, View):
         entry.num_servings = num_servings
         entry.save()
         return HttpResponseRedirect(reverse('index'))
+
 
 class AddOneServing(LoginRequiredMixin, View):
     def post(self, request):

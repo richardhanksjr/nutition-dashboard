@@ -1,5 +1,6 @@
 from django.contrib import admin
 from api.models import MeditationEvent
+from django.contrib.auth.admin import UserAdmin
 
 
 from .models import UserProfile
@@ -9,12 +10,13 @@ User = get_user_model()
 
 admin.site.unregister(User)
 
+
 class UserProfileInline(admin.TabularInline):
     model = UserProfile
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     inlines = [UserProfileInline]
 
 

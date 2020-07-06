@@ -15,21 +15,50 @@ GREEN = "background-color:#03DAC5;"
 class Index(LoginRequiredMixin, TemplateView):
     template_name = 'front_end/index.html'
     RED_WIDTH = 25
-    PROTEIN_MULTIPLIER = 1.25
     today = localtime(timezone.now()).date()
 
-    def _pe_ratio(self, context, total_protein_for_day, total_energy):
-        PE_GREEN_GOAL = 1.75
+    _plan_details = {
+        'aggressive': {
+            'protein_multiplier': 1.4,
+            'pe_ratio': 1.75,
+            'med_relax': 3,
+            'eating_window': 4
+
+        },
+        'moderate': {
+            'protein_multiplier': 1.2,
+            'pe_ratio': 1.5,
+            'med_relax': 2,
+            'eating_window': 6
+        },
+        'slow': {
+            'protein_multiplier': 1.1,
+            'pe_ratio': 1.25,
+            'med_relax': 1,
+            'eating_window': 8
+
+        },
+        'maintenance': {
+            'protein_multiplier': 1.0,
+            'pe_ratio': 1,
+            'med_relax': 1,
+            'eating_window': 10
+
+        }
+    }
+
+    def _pe_ratio(self, context, total_protein_for_day, total_energy, user_plan):
+        pe_green_goal = user_plan['pe_ratio']
         if total_energy:
             pe_ratio = total_protein_for_day / total_energy
         else:
             pe_ratio = total_protein_for_day
-        context['pe_text'] = f"{pe_ratio:.2f}/{PE_GREEN_GOAL}"
+        context['pe_text'] = f"{pe_ratio:.2f}/{pe_green_goal}"
         if pe_ratio >= 2:
             context['pe_gold'] = True
             context['pe_width'] = 100
 
-        elif pe_ratio >= PE_GREEN_GOAL:
+        elif pe_ratio >= pe_green_goal:
             context['pe_green'] = True
             context['pe_width'] = 100
         elif pe_ratio >= 1.2:
@@ -40,9 +69,10 @@ class Index(LoginRequiredMixin, TemplateView):
             context['pd_width'] = self.RED_WIDTH
         return context
 
-    def _protein_context(self, context, total_protein_for_day):
+    def _protein_context(self, context, total_protein_for_day, user_plan):
+        protein_multiplier = user_plan['protein_multiplier']
         user_ideal_weight = self.request.user.user_profile.ideal_body_weight
-        if total_protein_for_day > (user_ideal_weight * self.PROTEIN_MULTIPLIER *1.25):
+        if total_protein_for_day > (user_ideal_weight * protein_multiplier * 1.25):
             context['protein_gold'] = True
             context['total_protein_color'] = GOLD
             context['protein_width'] = 100
@@ -51,7 +81,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_green'] = True
             context['protein_width'] = 100
 
-        elif total_protein_for_day > user_ideal_weight * self.PROTEIN_MULTIPLIER * .66:
+        elif total_protein_for_day > user_ideal_weight * protein_multiplier * .66:
             context['protein_yellow'] = True
             context['protein_width'] = 50
             context['total_protein_color'] = YELLOW
@@ -60,7 +90,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_width'] = self.RED_WIDTH
             context['total_protein_color'] = RED
 
-        context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight * self.PROTEIN_MULTIPLIER}"
+        context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight * protein_multiplier}"
         return context
 
     def _exercise_context(self, context):
@@ -93,7 +123,8 @@ class Index(LoginRequiredMixin, TemplateView):
         context['low_intensity'] = low_intensity_exercises
         return context
 
-    def _eating_context(self, context):
+    def _eating_context(self, context, user_plan):
+        num_hours_eating_window = user_plan['eating_window']
         user = self.request.user
         meals = NutritionEntry.objects.filter(date=self.today, user=user).order_by('time_entered')
         # Only calculate eating window if we have a first meal.   In template, check for 'fasting'
@@ -102,13 +133,13 @@ class Index(LoginRequiredMixin, TemplateView):
 
             last_meal_time = meals.last().time_entered
             end_eating_time = meals.first().time_entered + timezone.timedelta(
-                hours=user.user_profile.num_hours_eating_window)
+                hours=num_hours_eating_window)
             num_hours_yellow_window = 1
             if timezone.now() <= end_eating_time:
                 context['fasting_width'] = 100
                 context['fasting_green'] = True
                 context['seconds_since_first_meal'] = (
-                        timezone.timedelta(hours=user.user_profile.num_hours_eating_window)
+                        timezone.timedelta(hours=num_hours_eating_window)
                         - (timezone.now() - meals.first().time_entered)).total_seconds()
             elif end_eating_time <= timezone.now() < last_meal_time + timezone.timedelta(
                     hours=num_hours_yellow_window) and last_meal_time > end_eating_time:
@@ -134,38 +165,43 @@ class Index(LoginRequiredMixin, TemplateView):
             context['fasting_text'] = 'FASTING'
         return context
 
-    def _meditation_context(self, context):
+    def _meditation_context(self, context, user_plan):
+        num_meditations_goal = user_plan['med_relax']
         meditations = Meditation.objects.filter(date=self.today, user=self.request.user)
         num_meditations = meditations.count()
-        if num_meditations > 1:
+        if num_meditations >= num_meditations_goal:
             context['meditation_green'] = True
             context['meditation_width'] = 100
-        elif num_meditations == 1:
+        elif num_meditations > 0:
             context['meditation_yellow'] = True
             context['meditation_width'] = 50
         else:
             context['meditation_red'] = True
             context['meditation_width'] = self.RED_WIDTH
-        context['meditation_text'] = f"{num_meditations}/2"
+        context['meditation_text'] = f"{num_meditations}/{num_meditations_goal}"
         context['meditations'] = meditations
         return context
 
     def get_context_data(self, **kwargs):
         user = self.request.user
+        plan_details = self._plan_details[user.user_profile.plan]
         today = localtime(timezone.now()).date()
         context = super().get_context_data(**kwargs)
         nutrition_entries = NutritionEntry.objects.filter(user=user, date=today)
-        context['meals'] = Meal.objects.filter(user=user)
+        # TODO Change this back to user
+        # context['meals'] = Meal.objects.filter(user=user)
+        context['meals'] = Meal.objects.all()
+
 
         context['entries'] = nutrition_entries
         total_protein_for_day = sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
         total_energy = sum([((entry.carb_grams - entry.fiber_grams) + entry.fat_grams) * entry.num_servings for entry in
                             nutrition_entries])
-        context = self._pe_ratio(context, total_protein_for_day, total_energy)
+        context = self._pe_ratio(context, total_protein_for_day, total_energy, plan_details)
 
-        context = self._protein_context(context, total_protein_for_day)
+        context = self._protein_context(context, total_protein_for_day, plan_details)
         context = self._exercise_context(context)
-        context = self._eating_context(context)
-        context = self._meditation_context(context)
+        context = self._eating_context(context, plan_details)
+        context = self._meditation_context(context, plan_details)
 
         return context

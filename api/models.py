@@ -36,15 +36,17 @@ class NutritionEntry(models.Model):
         verbose_name_plural = 'NutritionEntries'
 
 
-
-
-
 class UserProfile(models.Model):
+    PLAN_CHOICES = [
+        ('aggressive', 'Aggressive Weight Loss'),
+        ('moderate', 'Moderate Weight Loss'),
+        ('slow', 'Slow Weight Loss'),
+        ('maintenance', 'Weight Maintenance')
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     ideal_body_weight = models.IntegerField(null=False, blank=False, default=150)
-    num_hours_eating_window = models.IntegerField(null=False, blank=False, default=8)
     include_meditation_in_app = models.BooleanField(default=False)
-    # plan = models.OneToOneField('Plan', blank=False, related_name='user_plan')
+    plan = models.CharField(choices=PLAN_CHOICES, null=False, blank=False, default='slow', max_length=50)
 
 
 class Exercise(models.Model):

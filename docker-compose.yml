@@ -4,7 +4,7 @@ services:
     build: .
     command: bash -c "python /code/manage.py collectstatic --noinput &&
                       python /code/manage.py migrate &&
-                      python manage.py runserver 0.0.0.0:8001
+                      python manage.py runserver 0.0.0.0:8000
                      "
 #    command: python manage.py runserver 0.0.0.0:8001  python manage.py migrate
     env_file:
@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - 8001:8001
+      - 8000:8000
     depends_on:
       - db
   db:
