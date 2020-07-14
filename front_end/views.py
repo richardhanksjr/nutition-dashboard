@@ -19,27 +19,26 @@ class Index(LoginRequiredMixin, TemplateView):
 
     _plan_details = {
         'super_charged': {
-            "protein_multiplier": 1.5,
-            "pe_ratio": 2,
+            "protein_multiplier": 1.4,
+            "pe_ratio": 2.8,
             "med_relax": 3,
-            "eating_window": 4
+            "eating_window": 6
         },
         'aggressive': {
-            'protein_multiplier': 1.4,
-            'pe_ratio': 1.75,
+            'protein_multiplier': 1.3,
+            'pe_ratio': 2.2,
             'med_relax': 3,
-            'eating_window': 4
-
+            'eating_window': 6
         },
         'moderate': {
             'protein_multiplier': 1.2,
-            'pe_ratio': 1.5,
+            'pe_ratio': 1.7,
             'med_relax': 2,
-            'eating_window': 6
+            'eating_window': 8
         },
         'slow': {
             'protein_multiplier': 1.1,
-            'pe_ratio': 1.25,
+            'pe_ratio': 1.3,
             'med_relax': 1,
             'eating_window': 8
 
@@ -210,3 +209,5 @@ class Index(LoginRequiredMixin, TemplateView):
         context = self._meditation_context(context, plan_details)
 
         return context
+
+
