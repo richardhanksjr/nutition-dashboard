@@ -14,7 +14,7 @@ GREEN = "background-color:#03DAC5;"
 
 class Index(LoginRequiredMixin, TemplateView):
     template_name = 'front_end/index.html'
-    RED_WIDTH = 25
+    RED_WIDTH = 100
     today = localtime(timezone.now()).date()
 
     _plan_details = {
@@ -68,10 +68,10 @@ class Index(LoginRequiredMixin, TemplateView):
             context['pe_width'] = 100
         elif pe_ratio >= 1.2:
             context['pe_yellow'] = True
-            context['pe_width'] = 50
+            context['pe_width'] = 100
         else:
             context['pe_red'] = True
-            context['pd_width'] = self.RED_WIDTH
+            context['pe_width'] = 100
         return context
 
     def _protein_context(self, context, total_protein_for_day, user_plan):
@@ -88,7 +88,7 @@ class Index(LoginRequiredMixin, TemplateView):
 
         elif total_protein_for_day > user_ideal_weight * protein_multiplier * .66:
             context['protein_yellow'] = True
-            context['protein_width'] = 50
+            context['protein_width'] = 100
             context['total_protein_color'] = YELLOW
         else:
             context['protein_red'] = True
@@ -118,7 +118,7 @@ class Index(LoginRequiredMixin, TemplateView):
 
         elif low_intensity_exercises:
             context['exercise_yellow'] = True
-            context['exercise_width'] = 50
+            context['exercise_width'] = 100
             context['exercise_text'] = "Activity"
         else:
             context['exercise_red'] = True
@@ -179,7 +179,7 @@ class Index(LoginRequiredMixin, TemplateView):
             context['meditation_width'] = 100
         elif num_meditations > 0:
             context['meditation_yellow'] = True
-            context['meditation_width'] = 50
+            context['meditation_width'] = 100
         else:
             context['meditation_red'] = True
             context['meditation_width'] = self.RED_WIDTH

@@ -5,30 +5,30 @@
     {% if exercise_gold %}
         <div class="progress" style="height: 40px; background-color: #6e6b71;">
 
-            <div class="progress-bar glow" role="progressbar"
+            <button class="progress-bar glow" role="progressbar"
                  style="width: {{ exercise_width }}%; transition: width 2s;" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
                 {{ exercise_text }}
-            </div>
+            </button>
         </div>
 
     {% elif exercise_green %}
         <div class="progress" style="height: 40px; background-color: #6e6b71;">
             <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
-                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" data-toggle="modal" data-target="#exerciseModal">
                 {{ exercise_text }}
             </div>
         </div>
     {% elif exercise_yellow %}
         <div class="progress" style="height: 40px; background-color: #6e6b71;">
             <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
-                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" data-toggle="modal" data-target="#exerciseModal">
                 {{ exercise_text }}
             </div>
         </div>
     {% elif exercise_red %}
         <div class="progress" style="height: 40px; background-color: #6e6b71;">
             <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
-                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5">
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" data-toggle="modal" data-target="#exerciseModal">
                 {{ exercise_text }}
             </div>
         </div>

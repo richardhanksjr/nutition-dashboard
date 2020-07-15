@@ -54,10 +54,6 @@ label{
   transition: width 2s;
 }
 
-
-/*progress {*/
-  /*background-color: #f3f3f3;*/
-  /*border: 0;*/
-  /*height: 18px;*/
-  /*border-radius: 9px;*/
-/*}*/
+button.progress-bar{
+  padding-left: 38%;
+}
