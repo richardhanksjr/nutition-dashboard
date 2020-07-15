@@ -1,7 +1,7 @@
 /*Taken from https://www.w3schools.com/howto/howto_css_glowing_text.asp*/
 .glow {
   color: #fff;
-  background-color: darkgoldenrod;
+  background-color: #6208b8;
   text-align: center;
   -webkit-animation: glow 1s ease-in-out infinite alternate;
   -moz-animation: glow 1s ease-in-out infinite alternate;
