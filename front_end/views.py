@@ -55,24 +55,28 @@ class Index(LoginRequiredMixin, TemplateView):
 
     def _pe_ratio(self, context, total_protein_for_day, total_energy, user_plan):
         pe_green_goal = user_plan['pe_ratio']
-        if total_energy:
-            pe_ratio = total_protein_for_day / total_energy
-        else:
-            pe_ratio = total_protein_for_day
+        pe_ratio = NutritionEntry.calculate_pe_ratio(self.request.user)
+        # if total_energy:
+        #     pe_ratio = total_protein_for_day / total_energy
+        # else:
+        #     pe_ratio = total_protein_for_day
+        pe_ratio_color = NutritionEntry.calculate_pe_ratio_color(self.request.user)
         context['pe_text'] = f"{pe_ratio:.2f}/{pe_green_goal}"
-        if pe_ratio >= 2:
+        if pe_ratio_color == 'gold':
             context['pe_gold'] = True
             context['pe_width'] = 100
 
-        elif pe_ratio >= pe_green_goal:
+        elif pe_ratio_color == 'green':
             context['pe_green'] = True
             context['pe_width'] = 100
-        elif pe_ratio >= 1.2:
+        elif pe_ratio_color == 'yellow':
             context['pe_yellow'] = True
             context['pe_width'] = 100
         else:
             context['pe_red'] = True
             context['pe_width'] = 100
+        context['pe_streak'] = NutritionEntry.calculate_pe_streak(self.request.user)
+
         return context
 
     def _protein_context(self, context, total_protein_for_day, user_plan):
@@ -96,6 +100,8 @@ class Index(LoginRequiredMixin, TemplateView):
             context['protein_red'] = True
             context['protein_width'] = self.RED_WIDTH
             context['total_protein_color'] = RED
+
+        context['protein_streak'] = NutritionEntry.calculate_protein_streak(self.request.user)
 
         context['protein_text'] = f"{total_protein_for_day:.2f}/{user_ideal_weight * protein_multiplier}"
         return context
@@ -128,6 +134,8 @@ class Index(LoginRequiredMixin, TemplateView):
 
         context['hit_exercises'] = hit_exercises
         context['low_intensity'] = low_intensity_exercises
+        context['exercise_streak'] = NutritionEntry.calculate_exercise_streak(self.request.user)
+
         return context
 
     def _eating_context(self, context, user_plan):
@@ -175,17 +183,19 @@ class Index(LoginRequiredMixin, TemplateView):
     def _meditation_context(self, context, user_plan):
         num_meditations_goal = user_plan['med_relax']
         meditations = Meditation.objects.filter(date=self.today, user=self.request.user)
-        num_meditations = meditations.count()
-        if num_meditations >= num_meditations_goal:
+        num_meditations = NutritionEntry.calculate_num_meditations(self.request.user)
+        meditation_color = NutritionEntry.calculate_meditation_color(self.request.user)
+        if meditation_color == 'green':
             context['meditation_green'] = True
             context['meditation_width'] = 100
-        elif num_meditations > 0:
+        elif meditation_color == 'yellow':
             context['meditation_yellow'] = True
             context['meditation_width'] = 100
         else:
             context['meditation_red'] = True
             context['meditation_width'] = self.RED_WIDTH
         context['meditation_text'] = f"{num_meditations}/{num_meditations_goal}"
+        context['meditation_streak'] = NutritionEntry.calculate_meditation_streak(self.request.user)
         context['meditations'] = meditations
         return context
 
@@ -200,7 +210,6 @@ class Index(LoginRequiredMixin, TemplateView):
         context['meals'] = Meal.objects.all()
 
         context['entries'] = nutrition_entries
-        # total_protein_for_day = sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
         total_protein_for_day = NutritionEntry.total_protein_for_day(self.request.user)
         total_energy = sum([((entry.carb_grams - entry.fiber_grams) + entry.fat_grams) * entry.num_servings for entry in
                             nutrition_entries])

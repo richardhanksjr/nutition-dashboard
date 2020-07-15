@@ -15,6 +15,7 @@ class HighIntensityExerciseManger(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(exercise_type='high_intensity')
 
+
 _plan_details = {
     'super_charged': {
         "protein_multiplier": 1.4,
@@ -106,6 +107,102 @@ class NutritionEntry(models.Model):
             protein_color = "red"
         return protein_color
 
+    @classmethod
+    def calculate_num_meditations(cls, user, date=None):
+        return MeditationEvent.objects.filter(date=cls.today, user=user).count()
+
+    @classmethod
+    def calculate_meditation_color(cls, user, **kwargs):
+        num_meditations = cls.calculate_num_meditations(user, **kwargs)
+        num_meditations_goal = _plan_details[user.user_profile.plan]['med_relax']
+        if num_meditations >= num_meditations_goal:
+            color = "green"
+        elif num_meditations > 0:
+            color = "yellow"
+        else:
+            color = "red"
+
+        return color
+
+    @classmethod
+    def calculate_pe_ratio_color(cls, user):
+        pe_ratio = cls.calculate_pe_ratio(user)
+        user_plan = user.user_profile.plan
+        pe_goal = _plan_details[user_plan]['pe_ratio']
+
+        if pe_ratio > pe_goal * 1.25:
+            color = "gold"
+        elif pe_ratio >= pe_goal:
+            color = "green"
+        elif pe_ratio >= pe_goal * .75:
+            color = "yellow"
+        else:
+            color = "red"
+
+        return color
+
+    @classmethod
+    def calculate_total_energy(cls, user):
+        nutrition_entries = NutritionEntry.objects.filter(user=user, date=cls.today)
+        return sum([((entry.carb_grams - entry.fiber_grams) + entry.fat_grams) * entry.num_servings for entry in
+                    nutrition_entries])
+
+    @classmethod
+    def calculate_pe_ratio(cls, user):
+        total_energy = cls.calculate_total_energy(user)
+        total_protein = cls.total_protein_for_day(user)
+        if total_energy:
+            pe_ratio = total_protein / total_energy
+        else:
+            pe_ratio = total_protein
+
+        return pe_ratio
+
+    @classmethod
+    def calculate_meditation_streak(cls, user):
+        num_days_green = 0
+        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        for tracker in trackers:
+            print('meditation', tracker.meditation)
+            if tracker.meditation == 'green' or tracker.meditation == 'gold':
+                num_days_green += 1
+            else:
+                break
+        return num_days_green
+
+    @classmethod
+    def calculate_exercise_streak(cls, user):
+        num_days_green = 0
+        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        for tracker in trackers:
+            if tracker.exercise == 'green' or tracker.exercise == 'gold':
+                num_days_green += 1
+            else:
+                break
+        return num_days_green
+
+    @classmethod
+    def calculate_protein_streak(cls, user):
+        num_days_green = 0
+        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        for tracker in trackers:
+            if tracker.protein_total == 'green' or tracker.protein_total == 'gold':
+                num_days_green += 1
+            else:
+                break
+        return num_days_green
+
+    @classmethod
+    def calculate_pe_streak(cls, user):
+        num_days_green = 0
+        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        for tracker in trackers:
+            if tracker.pe_ratio == 'green' or tracker.pe_ratio == 'gold':
+                num_days_green += 1
+            else:
+                break
+        return num_days_green
+
 class UserProfile(models.Model):
     PLAN_CHOICES = [
         ('super_charged', 'Super Charged'),
@@ -188,16 +285,17 @@ class DailyTracking(models.Model):
         daily_tracking, _ = DailyTracking.objects.get_or_create(user=user, date=cls.today)
         daily_tracking.exercise = Exercise().calculate_exercise_color(user)
         daily_tracking.protein_total = NutritionEntry.calculate_total_protein_color(user)
+        daily_tracking.pe_ratio = NutritionEntry.calculate_pe_ratio_color(user)
+        daily_tracking.meditation = NutritionEntry.calculate_meditation_color(user)
         daily_tracking.save()
 
     def __str__(self):
-        return f"Total Protein: {self.protein_total}, Exercise: {self.exercise}"
+        return f"P:E Ratio: {self.pe_ratio}, Total Protein: {self.protein_total}, Exercise: {self.exercise}, Meditations: {self.meditation}"
 
 
 def create_profile(sender, **kwargs):
     if kwargs['created']:
         UserProfile.objects.create(user=kwargs['instance'])
-
 
 
 post_save.connect(create_profile, sender=User)

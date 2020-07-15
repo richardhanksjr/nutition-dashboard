@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import MeditationEvent
+from api.models import MeditationEvent, DailyTracking
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -22,4 +22,8 @@ class UserAdmin(UserAdmin):
 
 @admin.register(MeditationEvent)
 class MeditationAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(DailyTracking)
+class DailyTrackingAdmin(admin.ModelAdmin):
     pass

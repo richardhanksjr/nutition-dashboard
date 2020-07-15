@@ -54,6 +54,15 @@ label{
   transition: width 2s;
 }
 
-button.progress-bar{
-  padding-left: 38%;
+.progress-bar{
+  cursor: alias;
+}
+
+.badge-custom{
+  position: absolute !important;
+  top: 20px !important;
+  border: solid black !important;
+  left: 83% !important;
+  width: 45px !important;
+  height: 30px !important;
 }
