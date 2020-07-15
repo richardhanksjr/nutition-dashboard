@@ -4,7 +4,8 @@ from django.utils.timezone import localtime
 from django.utils import timezone
 
 # from api.forms import NutritionEntryForm
-from api.models import NutritionEntry, Meal, Exercise, MeditationEvent as Meditation
+from api.models import (NutritionEntry, Meal, Exercise, MeditationEvent as Meditation,
+                        DailyTracking)
 
 GOLD = "background-color:black; border: 1px solid black;"
 RED = "background-color:#CC0A37;"
@@ -77,16 +78,17 @@ class Index(LoginRequiredMixin, TemplateView):
     def _protein_context(self, context, total_protein_for_day, user_plan):
         protein_multiplier = user_plan['protein_multiplier']
         user_ideal_weight = self.request.user.user_profile.ideal_body_weight
-        if total_protein_for_day > (user_ideal_weight * protein_multiplier * 1.25):
+        protein_color = NutritionEntry.calculate_total_protein_color(self.request.user)
+        if protein_color == 'gold':
             context['protein_gold'] = True
             context['total_protein_color'] = GOLD
             context['protein_width'] = 100
-        elif total_protein_for_day > user_ideal_weight:
+        elif protein_color == "green":
             context['total_protein_color'] = GREEN
             context['protein_green'] = True
             context['protein_width'] = 100
 
-        elif total_protein_for_day > user_ideal_weight * protein_multiplier * .66:
+        elif protein_color == 'yellow':
             context['protein_yellow'] = True
             context['protein_width'] = 100
             context['total_protein_color'] = YELLOW
@@ -101,22 +103,22 @@ class Index(LoginRequiredMixin, TemplateView):
     def _exercise_context(self, context):
 
         context['exercise_choices'] = Exercise.get_exercise_type_display(Exercise)
-        hit_exercises = Exercise.objects.filter(user=self.request.user,
-                                                exercise_type='high_intensity',
-                                                date=self.today)
-        low_intensity_exercises = Exercise.objects.filter(user=self.request.user,
-                                                          exercise_type='low_intensity',
-                                                          date=self.today)
-        if hit_exercises and low_intensity_exercises:
+
+        hit_exercises = Exercise.high_intensity.filter(date=self.today,
+                                                                  user=self.request.user)
+        low_intensity_exercises = Exercise.low_intensity.filter(date=self.today,
+                                                                user=self.request.user)
+        exercise_color = Exercise.calculate_exercise_color(self.request.user)
+        if exercise_color == 'gold':
             context['exercise_gold'] = True
             context['exercise_width'] = 100
             context['exercise_text'] = "HIT + Activity!"
-        elif hit_exercises:
+        elif exercise_color == 'green':
             context['exercise_green'] = True
             context['exercise_width'] = 100
             context['exercise_text'] = "HIT"
 
-        elif low_intensity_exercises:
+        elif exercise_color == 'yellow':
             context['exercise_yellow'] = True
             context['exercise_width'] = 100
             context['exercise_text'] = "Activity"
@@ -198,7 +200,8 @@ class Index(LoginRequiredMixin, TemplateView):
         context['meals'] = Meal.objects.all()
 
         context['entries'] = nutrition_entries
-        total_protein_for_day = sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
+        # total_protein_for_day = sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
+        total_protein_for_day = NutritionEntry.total_protein_for_day(self.request.user)
         total_energy = sum([((entry.carb_grams - entry.fiber_grams) + entry.fat_grams) * entry.num_servings for entry in
                             nutrition_entries])
         context = self._pe_ratio(context, total_protein_for_day, total_energy, plan_details)
@@ -207,6 +210,11 @@ class Index(LoginRequiredMixin, TemplateView):
         context = self._exercise_context(context)
         context = self._eating_context(context, plan_details)
         context = self._meditation_context(context, plan_details)
+
+        # Update daily tracking
+        DailyTracking.update_user_tracking(self.request.user)
+        daily_tracking = DailyTracking.objects.get(user=self.request.user, date=self.today)
+        print(daily_tracking)
 
         return context
 
