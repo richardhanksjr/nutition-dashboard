@@ -3,14 +3,27 @@
 
 
 {% block content %}
-    {#    <div id="pe_ratio">+</div>#}
-    {#    <div id="pe_ratio_content"></div>#}
+
     <div class="row indicators">
-        {% include 'api/snippets/pe_ratio.html' %}
-        {% include 'api/snippets/protein_amount.html' %}
-        {% include 'api/snippets/exercise.html' %}
-        {% include 'api/snippets/eating_window.html' %}
-        {% include 'api/snippets/meditation.html' %}
+        <div class="col-sm-12 ">
+            {% include 'api/snippets/pe_ratio.html' %}
+
+        </div>
+        <div class="col-sm-12">
+            {% include 'api/snippets/protein_amount.html' %}
+
+        </div>
+        <div class="col-sm-12">
+            {% include 'api/snippets/exercise.html' %}
+
+        </div>
+        <div class="col-sm-12">
+            {% include 'api/snippets/eating_window.html' %}
+
+        </div>
+        <div class="col-sm-12">
+            {% include 'api/snippets/meditation.html' %}
+        </div>
     </div>
 
 
