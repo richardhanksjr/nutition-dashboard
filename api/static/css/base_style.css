@@ -22,9 +22,16 @@ body {
     /*background-color: rgb(255, 255, 224);*/
     /*background-color: rgb(255, 255, 245);*/
     /*background-color: rgb(126, 126, 126);*/
-    background-color: #ffffe0;
+    /*background-color: #ffffe0;*/
     font-family: 'Montserrat', sans-serif;
     height: 100%;
+
+        background: red linear-gradient(
+            to right,
+            red,
+            yellow 33%,
+            green 66%
+    );
 
 }
 
@@ -43,6 +50,15 @@ body {
     /*padding-bottom: 15px;*/
     height: calc(100vh - 240px);
 }
+
+/*.gradient {*/
+  /*height: 100px;*/
+    /*background: red linear-gradient(*/
+            /*to right,*/
+            /*red,*/
+            /*yellow 10%*/
+    /*);*/
+/*}*/
 
 .btn-black {
     width: 100%;
