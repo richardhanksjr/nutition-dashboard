@@ -1,4 +1,13 @@
 {% load static %}
+{% if exercise_green %}
+    {% firstof "bg-success" as background_class %}
+
+{% elif exercise_yellow %}
+    {% firstof  "bg-warning" as background_class %}
+{% else %}
+    {% firstof "bg-danger" as background_class %}
+
+{% endif %}
 <div class="col-sm mt-2">
 
     <h6 class="text-center">Exercise</h6>
@@ -14,29 +23,9 @@
 
         </div>
 
-    {% elif exercise_green %}
+    {% else%}
         <div class="progress" style="height: 40px; background-color: #6e6b71;">
-            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
-                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5"
-                 data-toggle="modal" data-target="#exerciseModal">
-                {{ exercise_text }}
-            </div>
-            <span class="badge badge-pill badge-secondary badge-custom">{{ exercise_streak }}</span>
-
-        </div>
-    {% elif exercise_yellow %}
-        <div class="progress" style="height: 40px; background-color: #6e6b71;">
-            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
-                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5"
-                 data-toggle="modal" data-target="#exerciseModal">
-                {{ exercise_text }}
-            </div>
-            <span class="badge badge-pill badge-secondary badge-custom">{{ exercise_streak }}</span>
-
-        </div>
-    {% elif exercise_red %}
-        <div class="progress" style="height: 40px; background-color: #6e6b71;">
-            <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
+            <div class="progress-bar progress-bar-striped {{ background_class }} progress-bar-animated" role="progressbar"
                  style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5"
                  data-toggle="modal" data-target="#exerciseModal">
                 {{ exercise_text }}

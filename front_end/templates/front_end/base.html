@@ -14,7 +14,13 @@
 
     <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/card_style.css' %}">
-    <link rel="apple-touch-icon" href="{% static 'images/pe_meter.jpeg' %}">
+    {#    <link rel="apple-touch-icon" href="{% static 'images/leverage.png' %}">#}
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/leverage-2.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/leverage-2.png' %}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{% static 'images/leverage-2.png' %}" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
 
@@ -22,7 +28,9 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-bottom pe-nav">
     <div class="container">
-        P:E RATIO
+        <div class="mx-auto">
+            <img src="{% static 'images/leverage-2.png' %}">
+        </div>
     </div>
 </nav>
 <div class="container-fluid">

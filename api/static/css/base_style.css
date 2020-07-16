@@ -20,7 +20,9 @@ body {
     /*margin: 0px 2rem 2rem;*/
     color: white;
     /*background-color: #282729;*/
-    background-color: #6E6B71;
+    /*background-color: #6E6B71;*/
+    /*background-color: rgb(255, 255, 224);*/
+    background-color: rgb(255, 255, 245);
     font-family: 'Montserrat', sans-serif;
 
 }
@@ -32,7 +34,7 @@ body {
 .indicators {
     margin-top: 2rem;
     margin-bottom: 4rem;
-    background-color: #4C4B4E;
+    background-color: #11314d;
     padding: 2rem;
 }
 
@@ -67,8 +69,9 @@ select {
 }
 
 .pe-nav{
-    background-color: #4C4B4E;
-    padding-bottom: 1rem;
+    /*background-color: #4C4B4E;*/
+    background-color: black;;
+    /*padding-bottom: 1rem;*/
     color: #6E6B71;
     font-size: 2rem;
 }
