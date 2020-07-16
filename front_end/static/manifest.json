@@ -1,0 +1,22 @@
+{
+    "name": "Leverage",
+    "short_name": "Leverage",
+    "start_url": "/",
+    "scope": ".",
+    "display": "standalone",
+    "background_color": "#FFF",
+    "theme_color": "#493174",
+    "description": "Leverage protein to maximize your results",
+    "dir": "ltr",
+    "lang": "en-US",
+    "orientation": "portrait-primary",
+    "icons": [{
+        "src": "/static/images/leverage-2.png",
+        "type": "image/png",
+        "sizes": "96x96"
+    }, {
+        "src": "/static/images/leverage-2.png",
+        "type": "image/png",
+        "sizes": "512x512"
+    }]
+}
