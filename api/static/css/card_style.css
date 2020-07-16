@@ -61,8 +61,12 @@ label{
 .badge-custom{
   position: absolute !important;
   top: 20px !important;
-  border: solid black !important;
+  /*border: solid black !important;*/
   left: 83% !important;
   width: 45px !important;
   height: 30px !important;
+  background-color: rgb(78, 192, 240);
+  color: black;
+  font-size: 17px;
+  box-shadow: 3px 3px black;
 }
