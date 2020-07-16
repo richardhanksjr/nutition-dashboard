@@ -26,7 +26,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     height: 100%;
 
-        background: red linear-gradient(
+    background: red linear-gradient(
             to right,
             red,
             yellow 33%,
@@ -49,15 +49,17 @@ body {
     /*flex: 1 1 auto;*/
     /*padding-bottom: 15px;*/
     height: calc(100vh - 240px);
+    box-shadow: 0 0 10px #000000;
+
 }
 
 /*.gradient {*/
-  /*height: 100px;*/
-    /*background: red linear-gradient(*/
-            /*to right,*/
-            /*red,*/
-            /*yellow 10%*/
-    /*);*/
+/*height: 100px;*/
+/*background: red linear-gradient(*/
+/*to right,*/
+/*red,*/
+/*yellow 10%*/
+/*);*/
 /*}*/
 
 .btn-black {
@@ -97,4 +99,6 @@ select {
     color: #6E6B71;
     font-size: 2rem;
     height: 200px;
+    box-shadow: 0 0 10px #000000;
+
 }
