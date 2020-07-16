@@ -202,9 +202,9 @@ class Index(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         user = self.request.user
         plan_details = self._plan_details[user.user_profile.plan]
-        today = localtime(timezone.now()).date()
+        # today = localtime(timezone.now()).date()
         context = super().get_context_data(**kwargs)
-        nutrition_entries = NutritionEntry.objects.filter(user=user, date=today)
+        nutrition_entries = NutritionEntry.objects.filter(user=user, date=self.today)
         # TODO Change this back to user
         # context['meals'] = Meal.objects.filter(user=user)
         context['meals'] = Meal.objects.all()
@@ -222,8 +222,6 @@ class Index(LoginRequiredMixin, TemplateView):
 
         # Update daily tracking
         DailyTracking.update_user_tracking(self.request.user)
-        daily_tracking = DailyTracking.objects.get(user=self.request.user, date=self.today)
-        print(daily_tracking)
 
         return context
 

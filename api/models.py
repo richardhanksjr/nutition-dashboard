@@ -1,8 +1,15 @@
+import pytz
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.utils.timezone import localtime
+
+
+# Utility functions
+def _get_localized_date_for_user(user):
+    timezone.activate(pytz.timezone(user.user_profile.timezone_preference))
+    return localtime(timezone.now()).date()
 
 
 # Model managers
@@ -68,7 +75,7 @@ class Meal(models.Model):
 
 
 class NutritionEntry(models.Model):
-    today = localtime(timezone.now()).date()
+
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
@@ -88,7 +95,8 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def total_protein_for_day(cls, user):
-        nutrition_entries = NutritionEntry.objects.filter(user=user, date=cls.today)
+        date = _get_localized_date_for_user(user)
+        nutrition_entries = NutritionEntry.objects.filter(user=user, date=date)
         return sum([entry.protein_grams * entry.num_servings for entry in nutrition_entries])
 
     @classmethod
@@ -109,7 +117,9 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def calculate_num_meditations(cls, user, date=None):
-        return MeditationEvent.objects.filter(date=cls.today, user=user).count()
+        date = _get_localized_date_for_user(user)
+        print("datetime is: ", date)
+        return MeditationEvent.objects.filter(date=date, user=user).count()
 
     @classmethod
     def calculate_meditation_color(cls, user, **kwargs):
@@ -143,7 +153,8 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def calculate_total_energy(cls, user):
-        nutrition_entries = NutritionEntry.objects.filter(user=user, date=cls.today)
+        date = _get_localized_date_for_user(user)
+        nutrition_entries = NutritionEntry.objects.filter(user=user, date=date)
         return sum([((entry.carb_grams - entry.fiber_grams) + entry.fat_grams) * entry.num_servings for entry in
                     nutrition_entries])
 
@@ -203,7 +214,9 @@ class NutritionEntry(models.Model):
                 break
         return num_days_green
 
+
 class UserProfile(models.Model):
+    TIMEZONE_CHOICES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
     PLAN_CHOICES = [
         ('super_charged', 'Super Charged'),
         ('aggressive', 'Aggressive Weight Loss'),
@@ -212,13 +225,13 @@ class UserProfile(models.Model):
         ('maintenance', 'Weight Maintenance')
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
+    timezone_preference = models.CharField(max_length=32, choices=TIMEZONE_CHOICES, default="US/Eastern")
     ideal_body_weight = models.IntegerField(null=False, blank=False, default=150)
     include_meditation_in_app = models.BooleanField(default=False)
     plan = models.CharField(choices=PLAN_CHOICES, null=False, blank=False, default='slow', max_length=50)
 
 
 class Exercise(models.Model):
-    today = localtime(timezone.now()).date()
 
     EXERCISE_CHOICES = [
         ('high_intensity', 'High Intensity'),
@@ -235,13 +248,14 @@ class Exercise(models.Model):
 
     @classmethod
     def calculate_exercise_color(cls, user):
+        date = _get_localized_date_for_user(user)
         hit_exercises = Exercise.objects.filter(user=user,
                                                 exercise_type='high_intensity',
-                                                date=cls.today)
+                                                date=date)
 
         low_intensity_exercises = Exercise.objects.filter(user=user,
                                                           exercise_type='low_intensity',
-                                                          date=cls.today)
+                                                          date=date)
         if hit_exercises and low_intensity_exercises:
             color = "gold"
 
@@ -261,7 +275,6 @@ class MeditationEvent(models.Model):
 
 
 class DailyTracking(models.Model):
-    today = localtime(timezone.now()).date()
 
     COLOR_CHOICES = [
         ('gold', 'gold'),
@@ -282,7 +295,8 @@ class DailyTracking(models.Model):
 
     @classmethod
     def update_user_tracking(cls, user):
-        daily_tracking, _ = DailyTracking.objects.get_or_create(user=user, date=cls.today)
+        date = _get_localized_date_for_user(user)
+        daily_tracking, _ = DailyTracking.objects.get_or_create(user=user, date=date)
         daily_tracking.exercise = Exercise().calculate_exercise_color(user)
         daily_tracking.protein_total = NutritionEntry.calculate_total_protein_color(user)
         daily_tracking.pe_ratio = NutritionEntry.calculate_pe_ratio_color(user)

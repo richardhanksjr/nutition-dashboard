@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'nutrition.TimezoneMiddleware.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'nutrition.urls'
@@ -119,8 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-# TODO need to change this back to UTC and calculate timezone based on user preference
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
