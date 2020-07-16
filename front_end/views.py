@@ -222,7 +222,7 @@ class Index(LoginRequiredMixin, TemplateView):
 
         # Update daily tracking
         DailyTracking.update_user_tracking(self.request.user)
-
+        context['index_url'] = self.request.build_absolute_uri()
         return context
 
 

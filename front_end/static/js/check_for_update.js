@@ -1,8 +1,5 @@
-let storage = window.localStorage;
-
-let date = storage.getItem("last_updated_time");
-if (!date){
-    console.log(new Date().getTime())
-    console.log("plus 10", new Date().getTime() + (10*60))
-}
- console.log(date)
+// Update the app every n minutes
+let num_minutes_to_update = 5;
+setInterval(function(){
+    window.location.href = index_url;
+}, 1000 * 60 * num_minutes_to_update);

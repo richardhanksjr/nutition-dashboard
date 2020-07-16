@@ -3,7 +3,9 @@
 
 
 {% block content %}
-
+    <script>
+        let index_url = "{{ index_url }}";
+    </script>
     <div class="row indicators">
         <div class="col-sm-12 ">
             {% include 'api/snippets/pe_ratio.html' %}
