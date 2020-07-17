@@ -40,7 +40,7 @@ body {
 }
 
 .indicators {
-    margin-top: 40px;
+    margin-top: 4vh;
     /*margin-bottom: 4rem;*/
     background-color: #17191a;
     /*background-color: rgb(78, 192, 240);*/
@@ -48,19 +48,10 @@ body {
     /*padding-bottom: 40%;*/
     /*flex: 1 1 auto;*/
     /*padding-bottom: 15px;*/
-    height: calc(100vh - 240px);
+    height: calc(100vh - 34vh);
     box-shadow: 0 0 10px #000000;
 
 }
-
-/*.gradient {*/
-/*height: 100px;*/
-/*background: red linear-gradient(*/
-/*to right,*/
-/*red,*/
-/*yellow 10%*/
-/*);*/
-/*}*/
 
 .btn-black {
     width: 100%;
@@ -98,7 +89,65 @@ select {
     /*padding-bottom: 1rem;*/
     color: #6E6B71;
     font-size: 2rem;
-    height: 200px;
+    height: 100vh;
     box-shadow: 0 0 10px #000000;
+    animation-name: move_nav_up;
+    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
 
 }
+
+.splash {
+    position: fixed;
+    background-color: black;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    height: 30vh;
+    width: 100%;
+    text-align: center;
+    animation-name: move_nav_up;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+}
+
+.opacityFade {
+    animation-name: setOpacityToZero;
+    animation-delay: 4s;
+    animation-duration: 0s;
+    animation-fill-mode: forwards;
+}
+
+.fade-in {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes move_nav_up {
+    from {
+        height: 100vh
+    }
+    to {
+        height: 30vh
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+/*@keyframes setOpacityToZero {*/
+/*from {z-index: 200}*/
+/*to {z-index: -10}*/
+/*}*/

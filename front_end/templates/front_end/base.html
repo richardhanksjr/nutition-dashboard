@@ -33,13 +33,15 @@
 <nav class="navbar navbar-default navbar-fixed-bottom pe-nav">
     <div class="container">
         <div class="mx-auto">
-            <img src="{% static 'images/leverage-2.png' %}">
+            <img class="fade-in" src="{% static 'images/leverage-2.png' %}">
         </div>
     </div>
 </nav>
 <div class="container-fluid">
     {% block content %}
-
+<script>
+    let index_url = {{ index_url }};
+</script>
     {% endblock %}
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
