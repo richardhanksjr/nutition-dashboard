@@ -83,12 +83,14 @@ select {
     overflow: scroll;
 }
 
-.pe-nav {
-    /*background-color: #4C4B4E;*/
+.pe-nav, .pe-nav-no-splash {
     background-color: black;;
-    /*padding-bottom: 1rem;*/
     color: #6E6B71;
     font-size: 2rem;
+}
+
+.pe-nav {
+
     height: 100vh;
     box-shadow: 0 0 10px #000000;
     animation-name: move_nav_up;
@@ -97,6 +99,10 @@ select {
     animation-fill-mode: forwards;
     animation-timing-function: ease;
 
+}
+
+.pe-nav-no-splash{
+    height: 30vh;
 }
 
 .splash {
@@ -147,17 +153,21 @@ select {
     }
 }
 
-.user-image{
-    opacity: 0;
+.user-image, .user-image-no-splash {
     position: fixed;
     right: 10px;
     top: 3vh;
     height: 8vh;
+}
+
+.user-image {
+    opacity: 0;
     animation-name: fadeIn;
     animation-delay: 2s;
     animation-duration: 2s;
     animation-fill-mode: forwards;
 }
+
 /*@keyframes setOpacityToZero {*/
 /*from {z-index: 200}*/
 /*to {z-index: -10}*/

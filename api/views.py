@@ -107,7 +107,7 @@ class AddNewFood(LoginRequiredMixin, View):
         NutritionEntry.objects.create(user=user, protein_grams=protein, carb_grams=carbs, fat_grams=fat,
                                       fiber_grams=fiber,
                                       description=description)
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class AddExistingMeal(LoginRequiredMixin, View):
@@ -125,7 +125,7 @@ class AddExistingMeal(LoginRequiredMixin, View):
         if not created:
             entry.num_servings += 1
             entry.save()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class DeleteEntry(LoginRequiredMixin, View):
@@ -135,7 +135,7 @@ class DeleteEntry(LoginRequiredMixin, View):
         # TODO fix this
         # if request.user is entry.user:
         entry.delete()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class DeleteExercise(LoginRequiredMixin, View):
@@ -145,7 +145,7 @@ class DeleteExercise(LoginRequiredMixin, View):
         # TODO fix this
         # if request.user is entry.user:
         entry.delete()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class AddExercise(LoginRequiredMixin, View):
@@ -154,14 +154,14 @@ class AddExercise(LoginRequiredMixin, View):
         exercise_number = request.POST.get("exercise_number")
         user = request.user
         Exercise.objects.create(user=user, exercise_type=exercises[exercise_number])
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class AddMeditation(LoginRequiredMixin, View):
     def post(self, request):
         user = request.user
         MeditationEvent.objects.create(user=user)
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class DeleteMeditation(LoginRequiredMixin, View):
@@ -169,7 +169,7 @@ class DeleteMeditation(LoginRequiredMixin, View):
         id = request.POST.get('id')
         meditation = MeditationEvent.objects.get(id=id)
         meditation.delete()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class UpdateServingQuantity(LoginRequiredMixin, View):
@@ -179,7 +179,7 @@ class UpdateServingQuantity(LoginRequiredMixin, View):
         num_servings = request.POST.get('num_servings')
         entry.num_servings = num_servings
         entry.save()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 
 class AddOneServing(LoginRequiredMixin, View):
@@ -188,6 +188,6 @@ class AddOneServing(LoginRequiredMixin, View):
         entry = NutritionEntry.objects.get(id=id)
         entry.num_servings += 1
         entry.save()
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 

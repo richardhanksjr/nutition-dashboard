@@ -200,10 +200,15 @@ class Index(LoginRequiredMixin, TemplateView):
         return context
 
     def get_context_data(self, **kwargs):
+
         user = self.request.user
         plan_details = self._plan_details[user.user_profile.plan]
         # today = localtime(timezone.now()).date()
         context = super().get_context_data(**kwargs)
+        if 'splash' in kwargs:
+            context['load_animation'] = False
+        else:
+            context['load_animation'] = True
         nutrition_entries = NutritionEntry.objects.filter(user=user, date=self.today)
         # TODO Change this back to user
         # context['meals'] = Meal.objects.filter(user=user)

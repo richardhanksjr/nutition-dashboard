@@ -25,15 +25,28 @@
     <link rel="apple-touch-icon" href="{% static 'images/leverage-2.png' %}">
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-bottom pe-nav">
-    <div class="container">
-        <div class="mx-auto">
-            <img class="fade-in" src="{% static 'images/leverage-2.png' %}">
-        </div>
-        <div>
-            <img class="user-image" src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX25634105.jpg">
-    </div>
-</nav>
+{% if load_animation %}
+    <nav class="navbar navbar-default navbar-fixed-bottom pe-nav">
+        <div class="container">
+            <div class="mx-auto">
+                <a href="{% url 'index' %}"><img class="fade-in" src="{% static 'images/leverage-2.png' %}"></a>
+
+            </div>
+            <div>
+                <img class="user-image" src="{% static 'images/profile.jpg' %}">
+            </div>
+    </nav>
+{% else %}
+    <nav class="navbar navbar-default navbar-fixed-bottom pe-nav-no-splash">
+        <div class="container">
+            <div class="mx-auto">
+                <a href="{% url 'index' %}"><img class="fade-in" src="{% static 'images/leverage-2.png' %}"></a>
+            </div>
+            <div>
+                <img class="user-image-no-splash" src="{% static 'images/profile.jpg' %}">
+            </div>
+    </nav>
+{% endif %}
 <div class="container-fluid">
     {% block content %}
         <script>
