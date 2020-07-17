@@ -13,16 +13,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
     <!-- place this in a head section -->
     <meta name="apple-mobile-web-app-capable" content="black"/>
     <link href="{% static 'images/leverage-2.png' %}" rel="apple-touch-startup-image"/>
 
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="1668x2224" rel="apple-touch-startup-image"/>#}
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="1536x2048" rel="apple-touch-startup-image"/>#}
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="1125x2436" rel="apple-touch-startup-image"/>#}
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="1242x2208" rel="apple-touch-startup-image"/>#}
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="750x1334" rel="apple-touch-startup-image"/>#}
-{#    <link href="{% static 'images/leverage-2.png' %}" sizes="640x1136" rel="apple-touch-startup-image"/>#}
     <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/card_style.css' %}">
     <link rel="manifest" href="{% static 'manifest.json' %}">
@@ -35,13 +30,15 @@
         <div class="mx-auto">
             <img class="fade-in" src="{% static 'images/leverage-2.png' %}">
         </div>
+        <div>
+            <img class="user-image" src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX25634105.jpg">
     </div>
 </nav>
 <div class="container-fluid">
     {% block content %}
-<script>
-    let index_url = {{ index_url }};
-</script>
+        <script>
+            let index_url = {{ index_url }};
+        </script>
     {% endblock %}
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -64,7 +61,6 @@
 <script src="{% static 'js/slider.js' %}"></script>
 <script src="{% static 'js/speedometer.js' %}"></script>
 <script src="{% static 'js/check_for_update.js' %}"></script>
-
 
 
 </html>

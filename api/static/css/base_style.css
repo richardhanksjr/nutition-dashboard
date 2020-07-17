@@ -147,6 +147,17 @@ select {
     }
 }
 
+.user-image{
+    opacity: 0;
+    position: fixed;
+    right: 10px;
+    top: 3vh;
+    height: 8vh;
+    animation-name: fadeIn;
+    animation-delay: 2s;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
 /*@keyframes setOpacityToZero {*/
 /*from {z-index: 200}*/
 /*to {z-index: -10}*/
