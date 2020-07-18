@@ -1,74 +1,102 @@
 /*Taken from https://www.w3schools.com/howto/howto_css_glowing_text.asp*/
 .glow {
-  color: #fff;
-  background-color: #6208b8;
-  text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 500ms ease-in-out infinite alternate;
+    color: #fff;
+    background-color: #6208b8;
+    text-align: center;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 500ms ease-in-out infinite alternate;
 }
 
 @-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }
 }
 
-div.container{
+div.container {
     height: 100%;
     overflow: scroll;
 }
 
-label{
-  font-size: .75rem;
+label {
+    font-size: .75rem;
 }
 
-#new_food_list{
-  margin-top: 20px;
-  color: black;
-}
-#new_food_list > label,  #new_food_list > button{
-  margin-top: 1rem;
+#new_food_list {
+    margin-top: 20px;
+    color: black;
 }
 
-.smaller-font{
-  font-size: .75rem;
+#new_food_list > label, #new_food_list > button {
+    margin-top: 1rem;
 }
 
-.rounded-card{
-  display: inline-block;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+.smaller-font {
+    font-size: .75rem;
 }
 
-.modal{
-  color: black;
+.rounded-card {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
 }
 
-.progress_bar{
-  width: 100%;
-  transition: width 2s;
+.modal {
+    color: black;
 }
 
-.progress-bar{
-  cursor: alias;
+.progress_bar {
+    width: 100%;
+    transition: width 2s;
 }
 
-.badge-custom{
-  position: absolute !important;
-  top: 20px !important;
-  /*border: solid black !important;*/
-  /*left: 83% !important;*/
-  /*margin-right: 85%;*/
-  margin-left: 80%;
-  width: 45px !important;
-  height: 30px !important;
-  background-color: rgb(78, 192, 240);
-  color: black;
-  font-size: 17px;
-  box-shadow: 3px 3px black;
+.progress-bar {
+    cursor: alias;
+}
+
+.badge-custom {
+    position: absolute !important;
+    top: 20px !important;
+    /*border: solid black !important;*/
+    /*left: 83% !important;*/
+    /*margin-right: 85%;*/
+    margin-left: 80%;
+    width: 45px !important;
+    height: 30px !important;
+    background-color: rgb(78, 192, 240);
+    color: black;
+    font-size: 17px;
+    opacity: 0;
+    box-shadow: 0 0 black;
+    animation-name: fadeInOpacity;
+    animation-delay: 1.25s;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+
+
+@keyframes fadeInOpacity {
+    from {
+        opacity: 0;
+        box-shadow: 0 0 black;
+    }
+    to {
+        opacity: 1;
+        box-shadow: 3px 3px black;
+
+    }
+}
+
+
+
+h6 {
+    font-size: .75rem;
+    color: rgb(78, 192, 240);
+
 }

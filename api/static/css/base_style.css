@@ -40,15 +40,15 @@ body {
 }
 
 .indicators {
-    margin-top: 4vh;
+    margin-top: 2vh;
     /*margin-bottom: 4rem;*/
     background-color: #17191a;
     /*background-color: rgb(78, 192, 240);*/
     /*padding: 2rem;*/
     /*padding-bottom: 40%;*/
     /*flex: 1 1 auto;*/
-    /*padding-bottom: 15px;*/
-    height: calc(100vh - 34vh);
+    padding-bottom: 15px;
+    height: calc(100vh - 32vh);
     box-shadow: 0 0 10px #000000;
 
 }
@@ -164,7 +164,7 @@ select {
     opacity: 0;
     animation-name: fadeIn;
     animation-delay: 2s;
-    animation-duration: 2s;
+    animation-duration: 3s;
     animation-fill-mode: forwards;
 }
 
@@ -179,7 +179,7 @@ select {
 
 
     .indicators {
-        margin-top: 4vh;
+        margin-top: 2vh;
         /*margin-bottom: 4rem;*/
         background-color: #17191a;
         /*background-color: rgb(78, 192, 240);*/
@@ -192,120 +192,7 @@ select {
 
     }
 
-    .btn-black {
-        width: 100%;
-        height: 71px;
-        background-color: black;
-        color: white;
-        border-radius: 100px;
-        font-family: Gotham, sans-serif;
-    }
 
-    .buttons {
-        padding: 4rem;
-        margin-top: 8rem;
-        background-color: #4C4B4E;
-        height: 100%;
-
-    }
-
-    select {
-        width: 100%;
-        overflow: hidden;
-        white-space: pre;
-        text-overflow: ellipsis;
-        -webkit-appearance: none;
-    }
-
-    #new_food_list {
-        height: 100%;
-        overflow: scroll;
-    }
-
-    .pe-nav, .pe-nav-no-splash {
-        background-color: black;;
-        color: #6E6B71;
-        font-size: 2rem;
-    }
-
-    .pe-nav {
-
-        height: 100vh;
-        box-shadow: 0 0 10px #000000;
-        animation-name: move_nav_up;
-        animation-duration: 2s;
-        animation-delay: 1s;
-        animation-fill-mode: forwards;
-        animation-timing-function: ease;
-
-    }
-
-    .pe-nav-no-splash {
-        height: 30vh;
-    }
-
-    .splash {
-        position: fixed;
-        background-color: black;
-        left: 0;
-        top: 0;
-        z-index: 200;
-        height: 30vh;
-        width: 100%;
-        text-align: center;
-        animation-name: move_nav_up;
-        animation-duration: 3s;
-        animation-delay: 1s;
-        animation-fill-mode: forwards;
-        animation-timing-function: ease;
-    }
-
-    .opacityFade {
-        animation-name: setOpacityToZero;
-        animation-delay: 4s;
-        animation-duration: 0s;
-        animation-fill-mode: forwards;
-    }
-
-    .fade-in {
-        opacity: 0;
-        animation-name: fadeIn;
-        animation-duration: 2s;
-        animation-fill-mode: forwards;
-    }
-
-    @keyframes move_nav_up {
-        from {
-            height: 100vh
-        }
-        to {
-            height: 30vh
-        }
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0
-        }
-        to {
-            opacity: 1
-        }
-    }
-
-    .user-image, .user-image-no-splash {
-        position: fixed;
-        right: 10px;
-        top: 3vh;
-        height: 8vh;
-    }
-
-    .user-image {
-        opacity: 0;
-        animation-name: fadeIn;
-        animation-delay: 2s;
-        animation-duration: 2s;
-        animation-fill-mode: forwards;
-    }
 }
 
 /*@keyframes setOpacityToZero {*/

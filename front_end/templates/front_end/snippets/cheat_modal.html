@@ -1,4 +1,4 @@
-<div class="modal fade" id="meditationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="cheatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -9,10 +9,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{% url 'add_meditation' %}">
+                <form method="post" action="{% url 'add_cheat' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <button class="btn btn-primary">Add Meditation</button>
+                        <button class="btn btn-primary">Add Cheat Meal</button>
                     </div>
 
                 </form>
@@ -23,11 +23,11 @@
 
                     <div id="hit_exercises_for_day">
                         <ul>
-                            {% for meditation in meditations %}
-                                <form method="post" action="{% url 'delete_meditation' %}">
+                            {% for cheat in cheats %}
+                                <form method="post" action="{% url 'delete_cheat' %}">
                                     {% csrf_token %}
-                                    <li>Meditation</li>
-                                    <input type="hidden" name="id" value="{{ meditation.id }}">
+                                    <li>Cheat: {{ cheat.date }}</li>
+                                    <input type="hidden" name="id" value="{{ cheat.id }}">
                                     <button class="btn btn-danger">Delete</button>
                                 </form>
                             {% endfor %}

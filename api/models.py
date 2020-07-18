@@ -23,37 +23,44 @@ class HighIntensityExerciseManger(models.Manager):
         return super().get_queryset().filter(exercise_type='high_intensity')
 
 
+
+
 _plan_details = {
     'super_charged': {
         "protein_multiplier": 1.4,
         "pe_ratio": 2.8,
         "med_relax": 3,
-        "eating_window": 6
+        "eating_window": 6,
+        "cheat_meals": 0,
     },
     'aggressive': {
         'protein_multiplier': 1.3,
         'pe_ratio': 2.2,
         'med_relax': 3,
-        'eating_window': 6
+        'eating_window': 6,
+        'cheat_meals': 0,
     },
     'moderate': {
         'protein_multiplier': 1.2,
         'pe_ratio': 1.7,
         'med_relax': 2,
-        'eating_window': 8
+        'eating_window': 8,
+        'cheat_meals': 1,
     },
     'slow': {
         'protein_multiplier': 1.1,
         'pe_ratio': 1.3,
         'med_relax': 1,
-        'eating_window': 8
+        'eating_window': 8,
+        'cheat_meals': 2,
 
     },
     'maintenance': {
         'protein_multiplier': 1.0,
         'pe_ratio': 1,
         'med_relax': 1,
-        'eating_window': 10
+        'eating_window': 10,
+        'cheat_meals': 2,
 
     }
 }
@@ -75,8 +82,6 @@ class Meal(models.Model):
 
 
 class NutritionEntry(models.Model):
-
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     time_entered = models.DateTimeField(auto_now_add=True)
@@ -170,9 +175,25 @@ class NutritionEntry(models.Model):
         return pe_ratio
 
     @classmethod
+    def calculate_cheat_score(cls, user):
+        date = _get_localized_date_for_user(user)
+        out_of_days = 7
+        target_num_cheats = _plan_details[user.user_profile.plan]['cheat_meals']
+        cheats_num = CheatEvent.objects.filter(user=user, date__lt=date,
+                                               date__gte=(date - timezone.timedelta(days=out_of_days))).count()
+        if cheats_num <= target_num_cheats:
+            color = "green"
+        elif cheats_num < target_num_cheats + 1:
+            color = "yellow"
+        else:
+            color = "red"
+        return color
+
+    @classmethod
     def calculate_meditation_streak(cls, user):
+        date = _get_localized_date_for_user(user)
         num_days_green = 0
-        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        trackers = DailyTracking.objects.filter(user=user, date__lt=date).order_by('-date')
         for tracker in trackers:
             print('meditation', tracker.meditation)
             if tracker.meditation == 'green' or tracker.meditation == 'gold':
@@ -183,8 +204,9 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def calculate_exercise_streak(cls, user):
+        date = _get_localized_date_for_user(user)
         num_days_green = 0
-        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        trackers = DailyTracking.objects.filter(user=user, date__lt=date).order_by('-date')
         for tracker in trackers:
             if tracker.exercise == 'green' or tracker.exercise == 'gold':
                 num_days_green += 1
@@ -194,8 +216,9 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def calculate_protein_streak(cls, user):
+        date = _get_localized_date_for_user(user)
         num_days_green = 0
-        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        trackers = DailyTracking.objects.filter(user=user, date__lt=date).order_by('-date')
         for tracker in trackers:
             if tracker.protein_total == 'green' or tracker.protein_total == 'gold':
                 num_days_green += 1
@@ -205,8 +228,9 @@ class NutritionEntry(models.Model):
 
     @classmethod
     def calculate_pe_streak(cls, user):
+        date = _get_localized_date_for_user(user)
         num_days_green = 0
-        trackers = DailyTracking.objects.filter(user=user, date__lt=timezone.now().date()).order_by('-date')
+        trackers = DailyTracking.objects.filter(user=user, date__lt=date).order_by('-date')
         for tracker in trackers:
             if tracker.pe_ratio == 'green' or tracker.pe_ratio == 'gold':
                 num_days_green += 1
@@ -232,7 +256,6 @@ class UserProfile(models.Model):
 
 
 class Exercise(models.Model):
-
     EXERCISE_CHOICES = [
         ('high_intensity', 'High Intensity'),
         ('low_intensity', 'Low Intensity')
@@ -274,8 +297,12 @@ class MeditationEvent(models.Model):
     date = models.DateField(auto_now_add=True)
 
 
-class DailyTracking(models.Model):
+class CheatEvent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
 
+
+class DailyTracking(models.Model):
     COLOR_CHOICES = [
         ('gold', 'gold'),
         ('green', 'green'),

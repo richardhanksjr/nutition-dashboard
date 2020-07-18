@@ -1,0 +1,39 @@
+{% load static %}
+{% if cheat_green %}
+    {% firstof "bg-success" as background_class %}
+
+{% elif cheat_yellow %}
+    {% firstof  "bg-warning" as background_class %}
+{% else %}
+    {% firstof "bg-danger" as background_class %}
+
+{% endif %}
+<div class="col-sm mt-2">
+
+    <h6 class="text-center">Cheat Meals</h6>
+    {% if exercise_gold %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+
+            <div class="progress-bar glow" role="progressbar"
+                 style="width: {{ exercise_width }}%; transition: width 2s;" aria-valuenow="4" aria-valuemin="0"
+                 aria-valuemax="5" data-toggle="modal" data-target="#cheatModal">
+                {{ exercise_text }}
+            </div>
+{#            <span class="badge badge-pill badge-custom">{{ exercise_streak }}</span>#}
+
+        </div>
+
+    {% else %}
+        <div class="progress" style="height: 40px; background-color: #6e6b71;">
+            <div class="progress-bar progress-bar-striped {{ background_class }} progress-bar-animated"
+                 role="progressbar"
+                 style="width: {{ exercise_width }}%; " aria-valuenow="4" aria-valuemin="0" aria-valuemax="5"
+                 data-toggle="modal" data-target="#cheatModal">
+                {{ cheat_text }}
+{#                <span class="badge badge-pill badge-custom">{{ exercise_streak }}</span>#}
+
+            </div>
+
+        </div>
+    {% endif %}
+</div>

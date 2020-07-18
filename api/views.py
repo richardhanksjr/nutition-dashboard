@@ -7,7 +7,7 @@ from django.views.generic.base import TemplateView
 from django.views import View
 from django.urls import reverse
 from .models import NutritionEntry
-from .models import Meal, NutritionEntry, Exercise, MeditationEvent
+from .models import Meal, NutritionEntry, Exercise, MeditationEvent, CheatEvent
 # from .forms import NutritionEntryForm
 from django.utils.timezone import localdate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -169,6 +169,21 @@ class DeleteMeditation(LoginRequiredMixin, View):
         id = request.POST.get('id')
         meditation = MeditationEvent.objects.get(id=id)
         meditation.delete()
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
+
+
+class AddCheat(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        CheatEvent.objects.create(user=user)
+        return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
+
+
+class DeleteCheat(LoginRequiredMixin, View):
+    def post(self, request):
+        id = request.POST.get('id')
+        cheat = CheatEvent.objects.get(id=id)
+        cheat.delete()
         return HttpResponseRedirect(reverse('index-no-splash', kwargs={'splash': 1}))
 
 

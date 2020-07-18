@@ -5,7 +5,7 @@ from django.utils import timezone
 
 # from api.forms import NutritionEntryForm
 from api.models import (NutritionEntry, Meal, Exercise, MeditationEvent as Meditation,
-                        DailyTracking)
+                        DailyTracking, CheatEvent)
 
 GOLD = "background-color:black; border: 1px solid black;"
 RED = "background-color:#CC0A37;"
@@ -199,6 +199,20 @@ class Index(LoginRequiredMixin, TemplateView):
         context['meditations'] = meditations
         return context
 
+    def _cheats_context(self, context):
+        cheats_color = NutritionEntry.calculate_cheat_score(self.request.user)
+        if cheats_color == "green":
+            context['cheat_green'] = True
+        elif cheats_color == "yellow":
+            context['cheat_yellow'] = True
+        else:
+            context['cheat_red'] = True
+        context['cheats'] = CheatEvent.objects.filter(user=self.request.user,
+                                                      date__lt=self.today,
+                                                      date__gte=(self.today - timezone.timedelta(days=7)))
+        return context
+
+
     def get_context_data(self, **kwargs):
 
         user = self.request.user
@@ -224,6 +238,7 @@ class Index(LoginRequiredMixin, TemplateView):
         context = self._exercise_context(context)
         context = self._eating_context(context, plan_details)
         context = self._meditation_context(context, plan_details)
+        context = self._cheats_context(context)
 
         # Update daily tracking
         DailyTracking.update_user_tracking(self.request.user)

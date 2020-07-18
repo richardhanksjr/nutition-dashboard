@@ -17,4 +17,6 @@ urlpatterns = [
     path('delete_meditation', views.DeleteMeditation.as_view(), name='delete_meditation'),
     path('update_quantity', views.UpdateServingQuantity.as_view(), name='update_quantity'),
     path('add_one_serving', views.AddOneServing.as_view(), name='add_one_serving'),
+    path('add_cheat', views.AddCheat.as_view(), name='add_cheat'),
+    path('delete_cheat', views.DeleteCheat.as_view(), name='delete_cheat'),
 ]
